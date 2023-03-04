@@ -1,8 +1,7 @@
 package com.training.formbean;
 
-import org.apache.struts.action.ActionForm;
 
-public class ShoppingCartGoods extends ActionForm{
+public class ShoppingCartGoods {
 	private long goodsID;
 	private String goodsName;
 	private int goodsPrice;

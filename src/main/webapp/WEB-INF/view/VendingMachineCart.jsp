@@ -53,7 +53,7 @@
 			const request = new XMLHttpRequest();
 			request.open("POST", "MemberAction.do");			
 			request.send(formData);
-			equest.onreadystatechange = function() {
+			request.onreadystatechange = function() {
 		        if (this.readyState == 4 && this.status == 200) {
 		            const response = request.responseText;		            
 		            const responseJson = JSON.parse(response);		            

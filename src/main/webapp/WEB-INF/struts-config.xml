@@ -6,7 +6,6 @@
 	<form-beans>
         <form-bean name="goodsorderform" type="com.training.formbean.GoodsOrderForm"/>
         <form-bean name="backactionform" type="com.training.formbean.BackActionForm"/>
-        <form-bean name="shoppingcartgoods" type="com.training.formbean.ShoppingCartGoods"/>
   	</form-beans>
   	
  <action-mappings>    
@@ -38,7 +37,7 @@
 <!--BackendAction.do?action=queryGoods-->
 <!--FrontendAction.do?action=searchGoods-->     
   
-        <action path="/MemberAction" type="com.training.action.MemberAction" parameter="action" name="shoppingcartgoods">
+        <action path="/MemberAction" type="com.training.action.MemberAction" parameter="action" name="goodsorderform">
         <forward name="vendingMachine" path="/WEB-INF/view/VendingMachineCart.jsp"/>
         </action>
     </action-mappings>

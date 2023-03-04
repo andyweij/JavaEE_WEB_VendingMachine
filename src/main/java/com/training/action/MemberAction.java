@@ -36,22 +36,25 @@ public class MemberAction extends DispatchAction {
 	private FrontendService frontendservice = FrontendService.getInstance();
 
 	public ActionForward addCartGoods(ActionMapping mapping, ActionForm form, HttpServletRequest req,
-			HttpServletResponse resp) throws IOException {
+			HttpServletResponse response) throws IOException {
 
-		List<ShoppingCartGoods> shoppingCartGoods = new ArrayList<>();
-		ShoppingCartGoods cartGoods=(ShoppingCartGoods) form;		
+		
+		ShoppingCartGoods cartGoods=new ShoppingCartGoods();
+		cartGoods.setGoodsID(Long.parseLong(req.getParameter("goodsID")));
+		cartGoods.setBuyQuantity(Integer.parseInt(req.getParameter("buyQuantity")) );
 //		GoodsOrderForm cartgoods = (GoodsOrderForm) form;
 
-		System.out.println("goodsID:" + cartGoods.getGoodsID());
-		System.out.println("buyQuantity:" + cartGoods.getBuyQuantity());
+
 		// 查詢資料庫商品並且加入購物車
 		
 		Goods goods = frontendservice.queryByGoodsId(cartGoods.getGoodsID());
 		cartGoods.setGoodsName( goods.getGoodsName());
 		cartGoods.setGoodsPrice(goods.getGoodsPrice());
-		
+		System.out.println("goodsID:" + cartGoods.getGoodsID());
+		System.out.println("buyQuantity:" + cartGoods.getBuyQuantity());
+		List<ShoppingCartGoods> shoppingCartGoods= new ArrayList<>() ;
 		HttpSession session = req.getSession();
-		if (session.getAttribute("shoppingCartGoods") == null) {			
+		if (null==session.getAttribute("shoppingCartGoods")) {	
 			shoppingCartGoods.add(cartGoods);
 			
 		} else {
@@ -63,9 +66,9 @@ public class MemberAction extends DispatchAction {
 			}
 		}
 		session.setAttribute("shoppingCartGoods", shoppingCartGoods);
-		resp.setCharacterEncoding("UTF-8");
-		resp.setContentType("application/json");
-		PrintWriter out = resp.getWriter();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		PrintWriter out = response.getWriter();
 		out.println(JSONArray.fromObject(shoppingCartGoods));
 		out.flush();
 		out.close();
@@ -73,10 +76,10 @@ public class MemberAction extends DispatchAction {
 	}
 
 	public ActionForward queryCartGoods(ActionMapping mapping, ActionForm form, HttpServletRequest req,
-			HttpServletResponse resp) throws IOException {
+			HttpServletResponse response) throws IOException {
 		ShoppingCartGoodsInfo cartGoodsInfo = new ShoppingCartGoodsInfo();
-		
 		HttpSession session = req.getSession();
+		session.removeAttribute("cartGoodsInfo");
 		List<ShoppingCartGoods> shoppingCartGoods=(ArrayList<ShoppingCartGoods>)session.getAttribute("shoppingCartGoods");
 		if(null==shoppingCartGoods) {
 			System.out.println("購物車無選購商品");
@@ -87,13 +90,13 @@ public class MemberAction extends DispatchAction {
 		}
 		cartGoodsInfo.setShoppingCartGoods(shoppingCartGoods.stream().collect(Collectors.toSet()));
 		cartGoodsInfo.setTotalAmount(shoppingCartGoods.stream().mapToInt(s->s.getGoodsPrice()*s.getBuyQuantity()).sum());
-		resp.setCharacterEncoding("UTF-8");
-		resp.setContentType("application/json");
-		PrintWriter out = resp.getWriter();	
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		PrintWriter out = response.getWriter();	
 		out.println(JSONObject.fromObject(cartGoodsInfo));
 		out.flush();
 		out.close();
-    	
+		session.setAttribute("cartGoodsInfo",cartGoodsInfo);
 		return mapping.findForward("vendingMachine");
 	}
 
@@ -101,7 +104,7 @@ public class MemberAction extends DispatchAction {
 			HttpServletResponse resp) throws IOException {
 		HttpSession session = req.getSession();
 		System.out.println("購物車已清空!");
-		session.removeAttribute("carGoods");	
+		session.removeAttribute("shoppingCartGoods");	
 		return mapping.findForward("vendingMachine");
 	}
 }
