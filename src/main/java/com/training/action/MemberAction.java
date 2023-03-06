@@ -22,9 +22,9 @@ import org.apache.struts.actions.DispatchAction;
 
 import com.training.dao.FrontEndDao;
 import com.training.formbean.GoodsOrderForm;
-import com.training.formbean.ShoppingCartGoods;
 import com.training.model.Goods;
 import com.training.service.FrontendService;
+import com.training.vo.ShoppingCartGoods;
 import com.training.vo.ShoppingCartGoodsInfo;
 
 import net.sf.json.JSONArray;
@@ -86,17 +86,17 @@ public class MemberAction extends DispatchAction {
 		}else {
 			System.out.println("-----購物車商品-----");
 			shoppingCartGoods.stream().forEach(i->System.out.println( "商品編號:"+i.getGoodsID()+"\n商品名稱:"+i.getGoodsName()+"\n商品價格:"+i.getGoodsPrice()+"\n購買數量:"+i.getBuyQuantity()));
-				
+			cartGoodsInfo.setShoppingCartGoods(shoppingCartGoods.stream().collect(Collectors.toSet()));
+			cartGoodsInfo.setTotalAmount(shoppingCartGoods.stream().mapToInt(s->s.getGoodsPrice()*s.getBuyQuantity()).sum());
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("application/json");
+			PrintWriter out = response.getWriter();	
+			out.println(JSONObject.fromObject(cartGoodsInfo));
+			out.flush();
+			out.close();
+			session.setAttribute("cartGoodsInfo",cartGoodsInfo);	
 		}
-		cartGoodsInfo.setShoppingCartGoods(shoppingCartGoods.stream().collect(Collectors.toSet()));
-		cartGoodsInfo.setTotalAmount(shoppingCartGoods.stream().mapToInt(s->s.getGoodsPrice()*s.getBuyQuantity()).sum());
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("application/json");
-		PrintWriter out = response.getWriter();	
-		out.println(JSONObject.fromObject(cartGoodsInfo));
-		out.flush();
-		out.close();
-		session.setAttribute("cartGoodsInfo",cartGoodsInfo);
+
 		return mapping.findForward("vendingMachine");
 	}
 
@@ -105,6 +105,7 @@ public class MemberAction extends DispatchAction {
 		HttpSession session = req.getSession();
 		System.out.println("購物車已清空!");
 		session.removeAttribute("shoppingCartGoods");	
+		session.removeAttribute("cartGoodsInfo");
 		return mapping.findForward("vendingMachine");
 	}
 }

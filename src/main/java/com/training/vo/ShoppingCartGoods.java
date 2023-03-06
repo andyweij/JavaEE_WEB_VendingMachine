@@ -1,4 +1,4 @@
-package com.training.formbean;
+package com.training.vo;
 
 
 public class ShoppingCartGoods {

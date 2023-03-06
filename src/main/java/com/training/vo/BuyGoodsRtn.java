@@ -12,7 +12,7 @@ public class BuyGoodsRtn {
 	private String customerId;
 	private String goodsinf;
 	private Goods[] goods;
-	private Set<Goods> good;
+	private Set<ShoppingCartGoods> shoppingCartGoods;
 	private Map<Goods, Integer> carGoods;
 	
 	public Map<Goods, Integer> getCarGoods() {
@@ -31,12 +31,12 @@ public class BuyGoodsRtn {
 		this.customerId = customerId;
 	}
 
-	public Set<Goods> getGood() {
-		return good;
+	public Set<ShoppingCartGoods> getshoppingCartGoods() {
+		return shoppingCartGoods;
 	}
 
-	public void setGood(Set<Goods> good) {
-		this.good = good;
+	public void setshoppingCartGoods(Set<ShoppingCartGoods> shoppingCartGoods) {
+		this.shoppingCartGoods = shoppingCartGoods;
 	}
 
 

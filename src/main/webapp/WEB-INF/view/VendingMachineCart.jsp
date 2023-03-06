@@ -68,7 +68,8 @@
 			// 送出清空購物車商品請求
 			const request = new XMLHttpRequest();
 			request.open("POST", "MemberAction.do");			
-			request.send(formData);			
+			request.send(formData);	
+			alert('購物車已清空');
 		}
 	</script>
 </head>

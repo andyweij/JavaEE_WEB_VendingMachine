@@ -1,5 +1,7 @@
 package com.training.service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -9,6 +11,7 @@ import com.training.dao.FrontEndDao;
 import com.training.formbean.GoodsOrderForm;
 import com.training.model.Goods;
 import com.training.vo.BuyGoodsRtn;
+import com.training.vo.ShoppingCartGoods;
 
 public class FrontendService {
 	private static FrontendService frontendservice = new FrontendService();
@@ -21,9 +24,9 @@ public class FrontendService {
 		return frontendservice;
 	}
 
-	public Map<String, Goods> queryBuyGoods(Map<Goods, Integer> cardGoods) {
+	public Map<String, Goods> queryBuyGoods(Set<ShoppingCartGoods> shoppingCartGoods) {
 		Set<String> goodsIDs = new HashSet<>();
-		cardGoods.keySet().stream().forEach(g->goodsIDs.add(g.getGoodsID()));
+		shoppingCartGoods.stream().forEach(g->goodsIDs.add(String.valueOf(g.getGoodsID())));
 		return frontenddao.queryBuyGoods(goodsIDs);
 	}
 
@@ -39,24 +42,24 @@ public class FrontendService {
 	public BuyGoodsRtn priceCalc(BuyGoodsRtn buyRtn, Map<String, Goods> queryBuyGoods) {
 		int total = 0;
 		StringBuffer sb = new StringBuffer();
-		Set<Goods>goods=buyRtn.getCarGoods().keySet();
-		for(Goods good:goods) {
-			if (buyRtn.getCarGoods().get(good) > 0 && queryBuyGoods.get(good.getGoodsID()).getGoodsQuantity() >= buyRtn.getCarGoods().get(good)) {
-				total += queryBuyGoods.get(good.getGoodsID()).getGoodsPrice()
-						* buyRtn.getCarGoods().get(good);
-				sb.append("<br/> 商品名稱：" + queryBuyGoods.get(good.getGoodsID()).getGoodsName() + " <br/> 商品金額:"
-					+ queryBuyGoods.get(good.getGoodsID()).getGoodsPrice() + " <br/> 購買數量:" +	buyRtn.getCarGoods().get(good) + "\n ");
-			} else if (buyRtn.getCarGoods().get(good) > 0 && queryBuyGoods.get(good.getGoodsID())
-					.getGoodsQuantity() < buyRtn.getCarGoods().get(good)) {
-				total += queryBuyGoods.get(good.getGoodsID()).getGoodsPrice()
-						* queryBuyGoods.get(good.getGoodsID()).getGoodsQuantity();
-			sb.append("<br/> 商品名稱：" + queryBuyGoods.get(good.getGoodsID()).getGoodsName() + "<br/>  商品金額:"
-					+ queryBuyGoods.get(good.getGoodsID()).getGoodsPrice() + "<br/>  購買數量:" +	queryBuyGoods.get(good.getGoodsID()).getGoodsQuantity() + "\n ");
-		}else if(buyRtn.getCarGoods().get(good) > 0 && queryBuyGoods.get(good.getGoodsID())
+		Set<ShoppingCartGoods>CartGoods=buyRtn.getshoppingCartGoods();
+		for(ShoppingCartGoods good:CartGoods) {
+			if (good.getBuyQuantity() > 0 && queryBuyGoods.get(String.valueOf(good.getGoodsID()) ).getGoodsQuantity() >= good.getBuyQuantity()) {
+				total += queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsPrice()
+						* good.getBuyQuantity();
+				sb.append("<br/> 商品名稱：" + queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsName() + " <br/> 商品金額:"
+					+ queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsPrice() + " <br/> 購買數量:" +	good.getBuyQuantity() + "\n ");
+			} else if (good.getBuyQuantity() > 0 && queryBuyGoods.get(String.valueOf(good.getGoodsID()))
+					.getGoodsQuantity() < good.getBuyQuantity()) {
+				total += queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsPrice()
+						* queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsQuantity();
+			sb.append("<br/> 商品名稱：" + queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsName() + "<br/>  商品金額:"
+					+ queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsPrice() + "<br/>  購買數量:" +	queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsQuantity() + "\n ");
+		}else if(good.getBuyQuantity() > 0 && queryBuyGoods.get(String.valueOf(good.getGoodsID()))
 					.getGoodsQuantity() ==0){
 			total+=0;
-			sb.append("<br/> 商品名稱：" + queryBuyGoods.get(good.getGoodsID()).getGoodsName() + "<br/>  商品金額:"
-					+ queryBuyGoods.get(good.getGoodsID()).getGoodsPrice() + "<br/>  購買數量:" +	queryBuyGoods.get(good.getGoodsID()).getGoodsQuantity() + "\n ");
+			sb.append("<br/> 商品名稱：" + queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsName() + "<br/>  商品金額:"
+					+ queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsPrice() + "<br/>  購買數量:" +	queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsQuantity() + "\n ");
 			}
 		}
 
@@ -97,7 +100,11 @@ public class FrontendService {
 		}
 		return goods;
 	}
-
+	public BigDecimal pageCounts() {
+		BigDecimal pagecounts=new BigDecimal(frontenddao.queryAllGoods().size()).divide(new BigDecimal("6"), 0, RoundingMode.UP);;		
+		return pagecounts;
+	}
+	
 //	public BuyGoodsRtn BuyGoodsRtn(GoodsOrderForm goodsorderform, int totalprice, Map<String, Goods> queryBuyGoods) {
 //		BuyGoodsRtn buygoodsRtn = new BuyGoodsRtn();
 //		if (goodsorderform.getPayPrice() >= totalprice) {

@@ -2,8 +2,6 @@ package com.training.vo;
 
 import java.util.Set;
 
-import com.training.formbean.ShoppingCartGoods;
-
 public class ShoppingCartGoodsInfo {
 	private int totalAmount;
 	
