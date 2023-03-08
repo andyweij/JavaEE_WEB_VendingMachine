@@ -15,7 +15,7 @@ HTML + Struts 1.x(Framework) + Filter(HttpSession) + JDBC(JNDI)
 (4)結帳改用購物車內商品結帳
 
 http://localhost:8085/JavaEE_WEB_VendingMachine/VendingMachineLogin.jsp
-
+A124243295
 ● server.xml 設置
 <Context docBase="JavaEE_Session5_Homework" path="/JavaEE_Session5_Homework" reloadable="true" source="org.eclipse.jst.jee.server:JavaEE_Session5_Homework">
    <Resource

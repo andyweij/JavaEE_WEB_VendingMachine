@@ -71,6 +71,13 @@
 			request.send(formData);	
 			alert('購物車已清空');
 		}
+		function onSelectPage(curPage){
+            if(curPage>=1 && curPage<=${pages.totalPages}){
+                if (curPage != ${pages.curPage})  {
+                	window.location.href="${pageContext.request.contextPath}/customer/queryAllSalesShippers?pageNum="+curPage;
+                }
+            }
+        }
 	</script>
 </head>
 <body align="center">
@@ -84,9 +91,9 @@
 		<tr>
 			<td colspan="2" align="right">
 				<form action="FrontendAction.do" method="get">
-					<input type="hidden" name="action" value="searchGoods" /> <input
-						type="hidden" name="pageNo" value="1" /> <input type="text"
-						name="searchKeyword" /> <input type="submit" value="商品查詢" />
+					<input type="hidden" name="action" value="searchGoods" /> 
+					<input type="hidden" name="pageNo" value="1" /> 
+					<input type="text" name="searchKeyword" value="${pages.searchKeyword}"/> <input type="submit" value="商品查詢" />
 				</form>
 			</td>
 		</tr>
@@ -119,30 +126,30 @@
 				<table border="1" style="border-collapse: collapse">
 					<tbody>
 					<tr>
-						<c:forEach items="${pagesearch}" var="pagegoods" varStatus="status">
+						<c:forEach items="${goodsList}" var="good" varStatus="status">
 								<td width="300"> 
 								<font face="微軟正黑體" size="5"> 
 								<!-- 例如: 可口可樂 30元/罐 -->
-								${pagegoods.goodsName}
+								${good.goodsName}
 								</font> 
 								<br/> 
 								<font face="微軟正黑體" size="4" style="color: gray;">
 								<!-- 例如: 可口可樂 30元/罐 -->
-								${pagegoods.goodsPrice} 元/罐
+								${good.goodsPrice} 元/罐
 								</font> 
 								<br /> 
 								<!-- 各商品圖片 --> 
-								<img border="0" src="DrinksImage/${pagegoods.goodsImageName}" width="150" height="150"> 
+								<img border="0" src="DrinksImage/${good.goodsImageName}" width="150" height="150"> 
 									<br /> 
 									<font face="微軟正黑體" size="3">
 										<input type="hidden" name="goodsID"
-										value="${pagegoods.goodsID}"> 購買<input type="number"
+										value="${good.goodsID}"> 購買<input type="number"
 										name="buyQuantity" min="0" max="30" size="5" value="0">罐
 										<!-- 設定最多不能買大於庫存數量 --> <br>
 									<br>
-									<button onclick="addCartGoods(${pagegoods.goodsID},${pagesearch.indexOf(pagegoods)})">加入購物車</button>
+									<button onclick="addCartGoods(${good.goodsID},${goodsList.indexOf(good)})">加入購物車</button>
 										<br>											<!--${status.index} 需設varStatus -->
-									<p style="color: red;">(庫存 ${pagegoods.goodsQuantity} 罐)</p> <!-- 顯示庫存數量 -->
+									<p style="color: red;">(庫存 ${good.goodsQuantity} 罐)</p> <!-- 顯示庫存數量 -->
 								</font>
 								</td>
 								</c:forEach>
@@ -153,16 +160,19 @@
 			</tr>
 
 		<tr>
-			<c:forEach items="${pages}" var="pages">
-				<td colspan="2" align="right">
-				<c:url value="/FrontendAction.do" var="page">
-				<c:param name="action" value="searchGoods"/>
-				<c:param name="searchKeyword" value="${ searchKeyword}"/>
-				<c:param name="pageNo" value="${pages}"/>
-				</c:url>
-					<h3 class="page"> <a href="${page}">${pages} </a> </h3>
+			<td colspan="2" align="right">
+			<c:forEach var="i" begin="1"
+					end="${pages.totalPages}">
+					<c:url value="/FrontendAction.do" var="page">
+						<c:param name="action" value="searchGoods" />
+						<c:param name="searchKeyword" value="${pages.searchKeyword}"/>
+						<c:param name="pageNo" value="${i}" />
+					</c:url>
+					<h3 class="page">
+						<a href="${page}">${i} </a>
+					</h3>
+				</c:forEach>
 				</td>
-			</c:forEach>
 		</tr>
 
 	</table>

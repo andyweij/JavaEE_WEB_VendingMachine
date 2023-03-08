@@ -38,7 +38,7 @@ public class LoginCheckFilter implements Filter {
             	
             } else {
                 // 不是登入驗證的請求或是SessionTimeOut,轉向到 "/login.html" 要求重新登入.            	
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/VendingMachineLogin.html");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/VendingMachineLogin.jsp");
                 dispatcher.forward(request,response);
             }            
         }

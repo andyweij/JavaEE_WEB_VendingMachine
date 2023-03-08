@@ -4,6 +4,14 @@ public class Pagination {
 private int totalPages;
 private int pageSize;
 private int curPage;
+private String searchKeyword;
+
+public String getSearchKeyword() {
+	return searchKeyword;
+}
+public void setSearchKeyword(String searchKeyword) {
+	this.searchKeyword = searchKeyword;
+}
 public int getTotalPages() {
 	return totalPages;
 }

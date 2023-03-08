@@ -7,11 +7,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import com.training.dao.FrontEndDao;
 import com.training.formbean.GoodsOrderForm;
 import com.training.model.Goods;
 import com.training.vo.BuyGoodsRtn;
+import com.training.vo.Pagination;
 import com.training.vo.ShoppingCartGoods;
+import com.training.vo.ShoppingCartGoodsInfo;
 
 public class FrontendService {
 	private static FrontendService frontendservice = new FrontendService();
@@ -30,7 +34,7 @@ public class FrontendService {
 		return frontenddao.queryBuyGoods(goodsIDs);
 	}
 
-	public boolean buyGoods(Set<Goods> goodsOrders) {
+	public boolean updateGoods(Set<Goods> goodsOrders) {
 
 		boolean updateSuccess = frontenddao.batchUpdateGoodsQuantity(goodsOrders);
 		if (updateSuccess) {
@@ -39,39 +43,17 @@ public class FrontendService {
 		return updateSuccess;
 	}
 
-	public BuyGoodsRtn priceCalc(BuyGoodsRtn buyRtn, Map<String, Goods> queryBuyGoods) {
+	public BuyGoodsRtn stockQuantity(BuyGoodsRtn buyRtn, Map<String, Goods> queryBuyGoods) {
 		int total = 0;
-		StringBuffer sb = new StringBuffer();
-		Set<ShoppingCartGoods>CartGoods=buyRtn.getshoppingCartGoods();
-		for(ShoppingCartGoods good:CartGoods) {
-			if (good.getBuyQuantity() > 0 && queryBuyGoods.get(String.valueOf(good.getGoodsID()) ).getGoodsQuantity() >= good.getBuyQuantity()) {
-				total += queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsPrice()
-						* good.getBuyQuantity();
-				sb.append("<br/> 商品名稱：" + queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsName() + " <br/> 商品金額:"
-					+ queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsPrice() + " <br/> 購買數量:" +	good.getBuyQuantity() + "\n ");
-			} else if (good.getBuyQuantity() > 0 && queryBuyGoods.get(String.valueOf(good.getGoodsID()))
-					.getGoodsQuantity() < good.getBuyQuantity()) {
-				total += queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsPrice()
-						* queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsQuantity();
-			sb.append("<br/> 商品名稱：" + queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsName() + "<br/>  商品金額:"
-					+ queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsPrice() + "<br/>  購買數量:" +	queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsQuantity() + "\n ");
-		}else if(good.getBuyQuantity() > 0 && queryBuyGoods.get(String.valueOf(good.getGoodsID()))
-					.getGoodsQuantity() ==0){
-			total+=0;
-			sb.append("<br/> 商品名稱：" + queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsName() + "<br/>  商品金額:"
-					+ queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsPrice() + "<br/>  購買數量:" +	queryBuyGoods.get(String.valueOf(good.getGoodsID())).getGoodsQuantity() + "\n ");
+		Set<ShoppingCartGoods> cartGoods=buyRtn.getshoppingCartGoods();
+		cartGoods.stream().forEach(g->{
+			if(g.getBuyQuantity()>queryBuyGoods.get(g.getGoodsID()).getGoodsQuantity()){	//確認庫存數量是否>購買數量
+				g.setBuyQuantity(queryBuyGoods.get(g).getGoodsQuantity());
 			}
-		}
-
-		if(buyRtn.getPayprice()>=total) {
+		});
+		total = cartGoods.stream().mapToInt(g->g.getGoodsPrice()*g.getBuyQuantity()).sum();
 		buyRtn.setTotalsprice(total);
-		buyRtn.setReturnprice(buyRtn.getPayprice()-total);
-		buyRtn.setGoodsinf(sb.toString());
-		}else {
-			buyRtn.setTotalsprice(total);
-			buyRtn.setReturnprice(buyRtn.getPayprice());
-			buyRtn.setGoodsinf("金額不足，無法購買");
-		}
+				
 		return buyRtn;
 	}
 
@@ -100,32 +82,31 @@ public class FrontendService {
 		}
 		return goods;
 	}
-	public BigDecimal pageCounts() {
-		BigDecimal pagecounts=new BigDecimal(frontenddao.queryAllGoods().size()).divide(new BigDecimal("6"), 0, RoundingMode.UP);;		
-		return pagecounts;
+	public Pagination pagInation(String pageNo,String searchkeyword) {
+		Pagination pages = new Pagination();
+		pages.setPageSize(6);//每頁顯示筆數
+		pages.setSearchKeyword(searchkeyword);	
+		if(null==pageNo||""==pageNo){
+			pages.setCurPage(1);
+		}else{
+		pages.setCurPage(Integer.parseInt(pageNo));
+		}
+		if(null==pages.getSearchKeyword()||""==pages.getSearchKeyword()){
+			pages.setTotalPages(new BigDecimal(frontenddao.queryAllGoods().size()).divide(new BigDecimal(pages.getPageSize()), 0, RoundingMode.UP).intValue());//總頁數
+		}else if(null!=pages.getSearchKeyword()||""!=pages.getSearchKeyword()){
+			pages.setTotalPages(new BigDecimal(frontenddao.pageSerach(pages.getSearchKeyword(),"").size()).divide(new BigDecimal(pages.getPageSize()), 0, RoundingMode.UP).intValue());//總頁數
+		}	
+		return pages;
 	}
 	
-//	public BuyGoodsRtn BuyGoodsRtn(GoodsOrderForm goodsorderform, int totalprice, Map<String, Goods> queryBuyGoods) {
-//		BuyGoodsRtn buygoodsRtn = new BuyGoodsRtn();
-//		if (goodsorderform.getPayPrice() >= totalprice) {
-//			buygoodsRtn.setPayprice(goodsorderform.getPayPrice());
-//			buygoodsRtn.setTotalsprice(totalprice);
-//			buygoodsRtn.setReturnprice(goodsorderform.getPayPrice() - totalprice);
-//			StringBuffer sb = new StringBuffer();
-//			
-//			queryBuyGoods.values().stream().forEach(g ->
-//			sb.append("商品名稱：" + g.getGoodsName() + " 商品金額:"
-//					+ g.getGoodsPrice() + " 購買數量:" +	g.getGoodsQuantity() + "\n"));
-//			
-//			buygoodsRtn.setGoodsinf(sb.toString());
-//		} else {
-//			buygoodsRtn.setPayprice(goodsorderform.getPayPrice());
-//			buygoodsRtn.setTotalsprice(totalprice);
-//			buygoodsRtn.setReturnprice(goodsorderform.getPayPrice());
-//			buygoodsRtn.setGoodsinf("");
-//		}
-//		return buygoodsRtn;
-//	}
+	public BuyGoodsRtn BuyGoodsRtn(GoodsOrderForm goodsorderform, ShoppingCartGoodsInfo cartGoodsInfo) {
+		BuyGoodsRtn buygoodsRtn = new BuyGoodsRtn();
+		buygoodsRtn.setPayprice(goodsorderform.getInputMoney());
+//		buygoodsRtn.setTotalsprice();
+		buygoodsRtn.setReturnprice(buygoodsRtn.getPayprice()-buygoodsRtn.getTotalsprice());
+		buygoodsRtn.setshoppingCartGoods(cartGoodsInfo.getShoppingCartGoods());
+		return buygoodsRtn;
+	}
 	public Goods queryByGoodsId(Long GoodsId) {
 		return frontenddao.queryByGoodsId(GoodsId);
 	}

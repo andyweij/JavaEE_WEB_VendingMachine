@@ -12,7 +12,7 @@
  
         <action path="/FrontendAction" type="com.training.action.FrontendAction" 
         		parameter="action" name="goodsorderform">
-        	<forward name="vendingMachine" path="FrontendAction.do?action=searchGoods" redirect="true"/>
+        	<forward name="vendingMachine" path="/WEB-INF/view/VendingMachineCart.jsp" />
             <forward name="vendingMachineview" path="/WEB-INF/view/VendingMachineCart.jsp"/>
         </action>
         

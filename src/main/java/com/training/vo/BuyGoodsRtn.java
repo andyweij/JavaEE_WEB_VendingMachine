@@ -11,8 +11,8 @@ public class BuyGoodsRtn {
 	private int returnprice;
 	private String customerId;
 	private String goodsinf;
-	private Goods[] goods;
 	private Set<ShoppingCartGoods> shoppingCartGoods;
+	
 	private Map<Goods, Integer> carGoods;
 	
 	public Map<Goods, Integer> getCarGoods() {
@@ -39,14 +39,6 @@ public class BuyGoodsRtn {
 		this.shoppingCartGoods = shoppingCartGoods;
 	}
 
-
-	public Goods[] getGoods() {
-		return goods;
-	}
-
-	public void setGoods(Goods[] goods) {
-		this.goods = goods;
-	}
 
 	public int getPayprice() {
 		return payprice;
