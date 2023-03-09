@@ -11,10 +11,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import com.training.formbean.GoodsOrderForm;
 import com.training.model.Goods;
 import com.training.model.Member;
 import com.training.vo.BuyGoodsRtn;
+import com.training.vo.ShoppingCartGoods;
 
 public class FrontEndDao {
 	private static FrontEndDao frontendDao = new FrontEndDao();
@@ -47,66 +49,65 @@ public class FrontEndDao {
 		return member;
 	}
 	
-	public BuyGoodsRtn BuyGoods(Map<Goods,Integer> goodsOrders,GoodsOrderForm goodsorderform) {
-		BuyGoodsRtn buygoodsRtn=new BuyGoodsRtn();
-		String updateSQL = "UPDATE beverage_goods SET QUANTITY = ? WHERE GOODS_ID = ? ";
-		List<Goods> goods = backendDao.queryGoods();
-		int total = 0;
-		try (Connection conn = DBConnectionFactory.getOracleDBConnection();) {
-			// 設置交易不自動提交
-			conn.setAutoCommit(false);
-			try (PreparedStatement stmt = conn.prepareStatement(updateSQL)) {
-				StringBuffer sb=new StringBuffer();
-				for (int i = 0; i < goodsorderform.getGoodsID().length; i++) {
-
-					for (Goods querygood : goods) {
-						int count = 1;
-						if (querygood.getGoodsID().equals(goodsorderform.getGoodsID()[i])
-								&& goodsorderform.getBuyQuantity()[i] > 0) {
-							if (querygood.getGoodsQuantity() >= goodsorderform.getBuyQuantity()[i]) {
-								total += goodsorderform.getBuyQuantity()[i]
-										* querygood.getGoodsPrice();
-								stmt.setInt(count++, querygood.getGoodsQuantity()
-										- goodsorderform.getBuyQuantity()[i]);
-								stmt.setString(count++, goodsorderform.getGoodsID()[i]);
-								stmt.addBatch();
-								sb.append("商品名稱："+querygood.getGoodsName()+" 商品金額:"+querygood.getGoodsPrice()+" 購買數量:"+goodsorderform.getBuyQuantity()[i]+"\n");
-								
-								break;
-							} else if (goodsorderform.getBuyQuantity()[i] == 0) {
-								continue;
-							} else {
-								total += querygood.getGoodsQuantity() * querygood.getGoodsPrice();
-								stmt.setInt(count++, 0);
-								stmt.setString(count++, goodsorderform.getGoodsID()[i]);
-								stmt.addBatch();
-								sb.append("商品名稱："+querygood.getGoodsName()+" 商品金額:"+querygood.getGoodsPrice()+" 購買數量:"+querygood.getGoodsQuantity()+"\n");
-								break;
-							}
-						} else {
-							continue;
-						}
-					}
-				}
-				int[] insertCounts = stmt.executeBatch();
-				conn.commit();
-				buygoodsRtn.setPayprice(goodsorderform.getInputMoney());
-				buygoodsRtn.setTotalsprice(total);
-				buygoodsRtn.setReturnprice(goodsorderform.getInputMoney()-total);
-				buygoodsRtn.setGoodsinf(sb.toString());
-				System.out.println(insertCounts);
-				System.out.println(total);				
-			} catch (SQLException e) {
-				conn.rollback();
-			}
-		} catch (SQLException e) {
-
-			e.getStackTrace();
-
-		}
-
-		return buygoodsRtn;
-	}
+//	public BuyGoodsRtn BuyGoods(Map<Goods,Integer> goodsOrders,GoodsOrderForm goodsorderform) {
+//		BuyGoodsRtn buygoodsRtn=new BuyGoodsRtn();
+//		String updateSQL = "UPDATE beverage_goods SET QUANTITY = ? WHERE GOODS_ID = ? ";
+//		List<Goods> goods = backendDao.queryGoods();
+//		int total = 0;
+//		try (Connection conn = DBConnectionFactory.getOracleDBConnection();) {
+//			// 設置交易不自動提交
+//			conn.setAutoCommit(false);
+//			try (PreparedStatement stmt = conn.prepareStatement(updateSQL)) {
+//				StringBuffer sb=new StringBuffer();
+//				for (int i = 0; i < goodsorderform.getGoodsID().length; i++) {
+//
+//					for (Goods querygood : goods) {
+//						int count = 1;
+//						if (querygood.getGoodsID().equals(goodsorderform.getGoodsID()[i])
+//								&& goodsorderform.getBuyQuantity()[i] > 0) {
+//							if (querygood.getGoodsQuantity() >= goodsorderform.getBuyQuantity()[i]) {
+//								total += goodsorderform.getBuyQuantity()[i]
+//										* querygood.getGoodsPrice();
+//								stmt.setInt(count++, querygood.getGoodsQuantity()
+//										- goodsorderform.getBuyQuantity()[i]);
+//								stmt.setString(count++, goodsorderform.getGoodsID()[i]);
+//								stmt.addBatch();
+//								sb.append("商品名稱："+querygood.getGoodsName()+" 商品金額:"+querygood.getGoodsPrice()+" 購買數量:"+goodsorderform.getBuyQuantity()[i]+"\n");
+//								
+//								break;
+//							} else if (goodsorderform.getBuyQuantity()[i] == 0) {
+//								continue;
+//							} else {
+//								total += querygood.getGoodsQuantity() * querygood.getGoodsPrice();
+//								stmt.setInt(count++, 0);
+//								stmt.setString(count++, goodsorderform.getGoodsID()[i]);
+//								stmt.addBatch();
+//								sb.append("商品名稱："+querygood.getGoodsName()+" 商品金額:"+querygood.getGoodsPrice()+" 購買數量:"+querygood.getGoodsQuantity()+"\n");
+//								break;
+//							}
+//						} else {
+//							continue;
+//						}
+//					}
+//				}
+//				int[] insertCounts = stmt.executeBatch();
+//				conn.commit();
+//				buygoodsRtn.setPayprice(goodsorderform.getInputMoney());
+//				buygoodsRtn.setTotalsprice(total);
+//				buygoodsRtn.setReturnprice(goodsorderform.getInputMoney()-total);
+//				System.out.println(insertCounts);
+//				System.out.println(total);				
+//			} catch (SQLException e) {
+//				conn.rollback();
+//			}
+//		} catch (SQLException e) {
+//
+//			e.getStackTrace();
+//
+//		}
+//
+//		return buygoodsRtn;
+//	}
 //	public Set<Goods> searchGoods(String searchKeyword, int startRowNo, int endRowNo) {
 //		Set<Goods> goods = new LinkedHashSet<>();
 //		String sk = "%" + searchKeyword + "%";
@@ -201,14 +202,15 @@ public class FrontEndDao {
 		}
 		return goods;
 	}
-	public boolean batchUpdateGoodsQuantity(Set<Goods> goods) {
+	public boolean batchUpdateGoodsQuantity(Map<ShoppingCartGoods,Integer> updateGoods) {
 		boolean updateSuccess = false;
+		Set<ShoppingCartGoods> good =updateGoods.keySet();
 		String updatesql = "UPDATE BEVERAGE_GOODS SET QUANTITY = ? WHERE GOODS_ID = ? ";
 		try (Connection conn = DBConnectionFactory.getOracleDBConnection();
 				PreparedStatement pstmt = conn.prepareStatement(updatesql)) {
-			for (Goods g : goods) {
-				pstmt.setInt(1, g.getGoodsQuantity());
-				pstmt.setString(2, g.getGoodsID());
+			for (ShoppingCartGoods g : good) {
+				pstmt.setInt(1, updateGoods.get(g));
+				pstmt.setLong(2,g.getGoodsID());
 				pstmt.addBatch();
 			}
 			int[] insertCounts = pstmt.executeBatch();
@@ -230,21 +232,21 @@ public class FrontEndDao {
 	 * @param goodsOrders【訂單資料(key:購買商品、value:購買數量)】
 	 * @return boolean
 	 */
-	public boolean batchCreateGoodsOrder(String customerID, Map<Goods, Integer> goodsOrders) {
+	public boolean batchCreateGoodsOrder(BuyGoodsRtn buyRtn) {
 		boolean insertSuccess = false;
-		Set<Goods> goods=goodsOrders.keySet();
+		Set<ShoppingCartGoods> cartGoods=buyRtn.getshoppingCartGoods();
 		int orderID = 0;
 		String[] col = { "ORDER_ID" };
 		String insertsql = "INSERT  INTO BEVERAGE_ORDER  VALUES (beverage_order_seq.nextval,SYSDATE,?,?,?,?)";
 		try (Connection conn = DBConnectionFactory.getOracleDBConnection()) {
 			try (PreparedStatement pstmt = conn.prepareStatement(insertsql, col)) {
 				conn.setAutoCommit(false);
-				for (Goods g : goods) {
+				for (ShoppingCartGoods g : cartGoods) {
 					int count = 1;
-					pstmt.setString(count++, customerID);
-					pstmt.setString(count++, g.getGoodsID());
+					pstmt.setString(count++, buyRtn.getCustomerId());
+					pstmt.setLong(count++, g.getGoodsID());
 					pstmt.setInt(count++, g.getGoodsPrice());
-					pstmt.setInt(count++, goodsOrders.get(g));
+					pstmt.setInt(count++, g.getBuyQuantity());
 					pstmt.addBatch();
 					int[] insertCounts = pstmt.executeBatch();
 //					for (int c : insertCounts) {System.out.println(c);}

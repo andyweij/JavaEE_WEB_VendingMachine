@@ -16,19 +16,19 @@
 <script type="text/javascript">
 	function senfront(){
 		
-		if(Session["carGoods"]==null){
-			alert("請加入商品");
-			return false;
+		if(Session["shoppingCartGoods"]==null){
+			alert('請加入商品');
+			return null;
 		}else{
 			
 			document.action.submit();
 		}
 		
 	}
-		function addCartGoods(goodsID, buyQuantityIdx){
-			
-			console.log("goodsID:", goodsID);			
+		function addCartGoods(goodsID, buyQuantityIdx){					
 			var buyQuantity = document.getElementsByName("buyQuantity")[buyQuantityIdx].value;
+			if(buyQuantity!=0){
+			console.log("goodsID:", goodsID);
 			console.log("buyQuantity:", buyQuantity);
 			const formData = new FormData();
 			formData.append('action', 'addCartGoods');
@@ -45,6 +45,9 @@
 		            alert(JSON.stringify(responseJson, null, 3));
 		      };
 		   }
+			}else{
+				alert('請輸入購買數量');
+			}
 		}
 		function queryCartGoods(){
 			const formData = new FormData();
@@ -112,14 +115,21 @@
 						name="inputMoney" max="100000" min="0" size="5" value="0">
 						<b>元</b> <b><input type="submit" value="送出">
 						<br />
+						<button onclick="senfront()">送出2</button>
 						</font>
 				</form>
 				<div style="border-width: 3px; border-style: dashed; border-color: #FFAC55; padding: 5px; width: 300px;">
 					<p style="color: blue;">~~~~~~~ 消費明細 ~~~~~~~</p>
-					<p style="margin: 10px;">投入金額：${buygoodsrtn.payprice}</p>
-					<p style="margin: 10px;">購買金額：${buygoodsrtn.totalsprice}</p>
-					<p style="margin: 10px;">找零金額：${buygoodsrtn.returnprice}</p>
-					<p style="margin: 10px;">物品明細:${buygoodsrtn.goodsinf}</p>
+					<p style="margin: 10px;">投入金額：${buyRtn.payprice}</p>
+					<p style="margin: 10px;">購買金額：${buyRtn.totalsprice}</p>
+					<p style="margin: 10px;">找零金額：${buyRtn.returnprice}</p>
+					<c:forEach items="${buyRtn.shoppingCartGoods}" var="goodsinfo" >   
+					<p style="margin: 10px;">物品明細:</br>
+					商品名稱:${goodsinfo.goodsName}</br>
+					商品金額:${goodsinfo.goodsPrice}</br>
+					商品數量:${goodsinfo.buyQuantity}</br>
+					</p>
+					</c:forEach>
 				</div>
 				</td>			
 			<td width="600" height="400">
@@ -174,7 +184,6 @@
 				</c:forEach>
 				</td>
 		</tr>
-
 	</table>
 </body>
 </html>

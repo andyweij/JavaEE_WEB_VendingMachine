@@ -30,5 +30,25 @@ public class ShoppingCartGoods {
 	public void setBuyQuantity(int buyQuantity) {
 		this.buyQuantity = buyQuantity;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (goodsID ^ (goodsID >>> 32));
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ShoppingCartGoods other = (ShoppingCartGoods) obj;
+		if (goodsID != other.goodsID)
+			return false;
+		return true;
+	}
 	
 }

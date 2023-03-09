@@ -10,7 +10,6 @@ public class BuyGoodsRtn {
 	private int totalsprice;
 	private int returnprice;
 	private String customerId;
-	private String goodsinf;
 	private Set<ShoppingCartGoods> shoppingCartGoods;
 	
 	private Map<Goods, Integer> carGoods;
@@ -64,16 +63,9 @@ public class BuyGoodsRtn {
 		this.returnprice = returnprice;
 	}
 
-	public String getGoodsinf() {
-		return goodsinf;
-	}
-
-	public void setGoodsinf(String string) {
-		this.goodsinf = string;
-	}
 
 	@Override
 	public String toString() {
-		return "投入金額:" + payprice + "\n購買金額:" + totalsprice + "\n找零金額:" + returnprice + "\n" + goodsinf ;
+		return "投入金額:" + payprice + "\n購買金額:" + totalsprice + "\n找零金額:" + returnprice + "\n";
 	}
 }

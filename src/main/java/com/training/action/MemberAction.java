@@ -56,7 +56,7 @@ public class MemberAction extends DispatchAction {
 		HttpSession session = req.getSession();
 		if (null==session.getAttribute("shoppingCartGoods")) {	
 			shoppingCartGoods.add(cartGoods);
-			
+
 		} else {
 			shoppingCartGoods = (ArrayList<ShoppingCartGoods>)session.getAttribute("shoppingCartGoods");
 			if(shoppingCartGoods.contains(cartGoods)) {
@@ -72,7 +72,7 @@ public class MemberAction extends DispatchAction {
 		out.println(JSONArray.fromObject(shoppingCartGoods));
 		out.flush();
 		out.close();
-		return mapping.findForward("vendingMachine");
+		return null;
 	}
 
 	public ActionForward queryCartGoods(ActionMapping mapping, ActionForm form, HttpServletRequest req,
@@ -106,6 +106,6 @@ public class MemberAction extends DispatchAction {
 		System.out.println("購物車已清空!");
 		session.removeAttribute("shoppingCartGoods");	
 		session.removeAttribute("cartGoodsInfo");
-		return mapping.findForward("vendingMachine");
+		return null;
 	}
 }

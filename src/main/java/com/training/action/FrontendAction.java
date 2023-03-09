@@ -33,24 +33,25 @@ public class FrontendAction extends DispatchAction{
 		HttpSession session = req.getSession();
 		ShoppingCartGoodsInfo cartGoodsInfo=(ShoppingCartGoodsInfo)session.getAttribute("cartGoodsInfo");
 		BuyGoodsRtn buyRtn=new BuyGoodsRtn();
-		if(cartGoodsInfo.getTotalAmount()<goodsorderform.getInputMoney()){//檢查金額是否足夠
+		if(cartGoodsInfo.getTotalAmount()>goodsorderform.getInputMoney()){//檢查金額是否足夠
 			
 			buyRtn=frontendservice.BuyGoodsRtn(goodsorderform, cartGoodsInfo);
 			return  mapping.findForward("vendingMachine");
-		}
-		
+		}		
 		Member mem=(Member)session.getAttribute("member");
 		buyRtn.setCustomerId(mem.getIdentificationNo());
 		buyRtn.setPayprice(goodsorderform.getInputMoney());
 		buyRtn.setshoppingCartGoods(cartGoodsInfo.getShoppingCartGoods());
 		Map<String,Goods> buyGoods=frontendservice.queryBuyGoods(cartGoodsInfo.getShoppingCartGoods());// 查詢購買品項資料庫資訊
 		buyRtn=frontendservice.stockQuantity(buyRtn, buyGoods);	//檢查庫存是否足夠
-		Set<Goods> goodsOrders=frontendservice.createGoodsOrder(buyRtn);//建立訂單
-		boolean updateResult=frontendservice.updateGoods(goodsOrders);//更新商品庫存
+		boolean createResult=frontendservice.createGoodsOrder(buyRtn);//建立訂單
+		boolean updateResult=frontendservice.updateGoods(buyRtn,buyGoods);//更新商品庫存
 		req.setAttribute("buyRtn", buyRtn);
+		session.removeAttribute("cartGoodsInfo");
 		String updateMsg=(updateResult)?"商品購買成功":"商品購買失敗";
 		return mapping.findForward("vendingMachine");
 	}
+	
 	public ActionForward searchGoods(ActionMapping mapping, ActionForm form, 
         HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		GoodsOrderForm goodsorderform=(GoodsOrderForm)form;

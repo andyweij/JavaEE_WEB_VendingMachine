@@ -34,9 +34,11 @@ public class FrontendService {
 		return frontenddao.queryBuyGoods(goodsIDs);
 	}
 
-	public boolean updateGoods(Set<Goods> goodsOrders) {
-
-		boolean updateSuccess = frontenddao.batchUpdateGoodsQuantity(goodsOrders);
+	public boolean updateGoods(BuyGoodsRtn buyRtn,Map<String,Goods> buyGoods) {
+		Set<ShoppingCartGoods> cartGoods=buyRtn.getshoppingCartGoods();
+		Map<ShoppingCartGoods,Integer> updateGoods=new HashMap<>();
+		cartGoods.stream().forEach(g->updateGoods.put(g,(buyGoods.get(String.valueOf(g.getGoodsID())).getGoodsQuantity()-g.getBuyQuantity())));
+		boolean updateSuccess = frontenddao.batchUpdateGoodsQuantity(updateGoods);
 		if (updateSuccess) {
 			System.out.println("商品庫存更新成功!");
 		}
@@ -47,40 +49,26 @@ public class FrontendService {
 		int total = 0;
 		Set<ShoppingCartGoods> cartGoods=buyRtn.getshoppingCartGoods();
 		cartGoods.stream().forEach(g->{
-			if(g.getBuyQuantity()>queryBuyGoods.get(g.getGoodsID()).getGoodsQuantity()){	//確認庫存數量是否>購買數量
-				g.setBuyQuantity(queryBuyGoods.get(g).getGoodsQuantity());
+			if(g.getBuyQuantity()>queryBuyGoods.get(String.valueOf(g.getGoodsID())).getGoodsQuantity()){	//確認庫存數量是否>購買數量
+				g.setBuyQuantity(queryBuyGoods.get(String.valueOf(g.getGoodsID())).getGoodsQuantity());
 			}
 		});
 		total = cartGoods.stream().mapToInt(g->g.getGoodsPrice()*g.getBuyQuantity()).sum();
 		buyRtn.setTotalsprice(total);
+		buyRtn.setReturnprice(buyRtn.getPayprice()-buyRtn.getTotalsprice());
+		buyRtn.setshoppingCartGoods(cartGoods);//更新正確數量
 				
 		return buyRtn;
 	}
 
-	public Set<Goods> createGoodsOrder(BuyGoodsRtn buyRtn) {
+	public boolean createGoodsOrder(BuyGoodsRtn buyRtn) {
 		boolean createResult = false;
-		Set<String> goodsIDs = new HashSet<>();
-		Map<String, Integer> buyGoodsquantity = new HashMap<>();
-		Set<Goods> buyGoods=buyRtn.getCarGoods().keySet();
-		Map<Goods, Integer> goodsOrders = new HashMap<>();
-		buyGoods.stream().forEach(g->{
-			if (g.getGoodsQuantity() >= buyRtn.getCarGoods().get(g)) {
-				goodsOrders.put(g, buyRtn.getCarGoods().get(g));
-			} else if(g.getGoodsQuantity()==0){}else {
-				goodsOrders.put(g, g.getGoodsQuantity());
-			}
-		});
-		
-		Set<Goods> goods = goodsOrders.keySet();
-		for (Goods good : goods) {
-			good.setGoodsQuantity(good.getGoodsQuantity() - goodsOrders.get(good));
-		}
 		// 建立訂單
-		createResult = frontenddao.batchCreateGoodsOrder(buyRtn.getCustomerId(), goodsOrders);
+		createResult = frontenddao.batchCreateGoodsOrder(buyRtn);
 		if (createResult) {
 			System.out.println("建立訂單成功!");
 		}
-		return goods;
+		return createResult;
 	}
 	public Pagination pagInation(String pageNo,String searchkeyword) {
 		Pagination pages = new Pagination();
