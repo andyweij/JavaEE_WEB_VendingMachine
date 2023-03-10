@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.training.formbean.GoodsOrderForm;
 import com.training.model.Goods;
 import com.training.model.Member;
 import com.training.vo.BuyGoodsRtn;
@@ -20,7 +19,6 @@ import com.training.vo.ShoppingCartGoods;
 
 public class FrontEndDao {
 	private static FrontEndDao frontendDao = new FrontEndDao();
-	private static BackEndDao backendDao = new BackEndDao();
 
 	public static FrontEndDao getInstance() {
 		return frontendDao;
@@ -48,97 +46,7 @@ public class FrontEndDao {
 		}
 		return member;
 	}
-	
-//	public BuyGoodsRtn BuyGoods(Map<Goods,Integer> goodsOrders,GoodsOrderForm goodsorderform) {
-//		BuyGoodsRtn buygoodsRtn=new BuyGoodsRtn();
-//		String updateSQL = "UPDATE beverage_goods SET QUANTITY = ? WHERE GOODS_ID = ? ";
-//		List<Goods> goods = backendDao.queryGoods();
-//		int total = 0;
-//		try (Connection conn = DBConnectionFactory.getOracleDBConnection();) {
-//			// 設置交易不自動提交
-//			conn.setAutoCommit(false);
-//			try (PreparedStatement stmt = conn.prepareStatement(updateSQL)) {
-//				StringBuffer sb=new StringBuffer();
-//				for (int i = 0; i < goodsorderform.getGoodsID().length; i++) {
-//
-//					for (Goods querygood : goods) {
-//						int count = 1;
-//						if (querygood.getGoodsID().equals(goodsorderform.getGoodsID()[i])
-//								&& goodsorderform.getBuyQuantity()[i] > 0) {
-//							if (querygood.getGoodsQuantity() >= goodsorderform.getBuyQuantity()[i]) {
-//								total += goodsorderform.getBuyQuantity()[i]
-//										* querygood.getGoodsPrice();
-//								stmt.setInt(count++, querygood.getGoodsQuantity()
-//										- goodsorderform.getBuyQuantity()[i]);
-//								stmt.setString(count++, goodsorderform.getGoodsID()[i]);
-//								stmt.addBatch();
-//								sb.append("商品名稱："+querygood.getGoodsName()+" 商品金額:"+querygood.getGoodsPrice()+" 購買數量:"+goodsorderform.getBuyQuantity()[i]+"\n");
-//								
-//								break;
-//							} else if (goodsorderform.getBuyQuantity()[i] == 0) {
-//								continue;
-//							} else {
-//								total += querygood.getGoodsQuantity() * querygood.getGoodsPrice();
-//								stmt.setInt(count++, 0);
-//								stmt.setString(count++, goodsorderform.getGoodsID()[i]);
-//								stmt.addBatch();
-//								sb.append("商品名稱："+querygood.getGoodsName()+" 商品金額:"+querygood.getGoodsPrice()+" 購買數量:"+querygood.getGoodsQuantity()+"\n");
-//								break;
-//							}
-//						} else {
-//							continue;
-//						}
-//					}
-//				}
-//				int[] insertCounts = stmt.executeBatch();
-//				conn.commit();
-//				buygoodsRtn.setPayprice(goodsorderform.getInputMoney());
-//				buygoodsRtn.setTotalsprice(total);
-//				buygoodsRtn.setReturnprice(goodsorderform.getInputMoney()-total);
-//				System.out.println(insertCounts);
-//				System.out.println(total);				
-//			} catch (SQLException e) {
-//				conn.rollback();
-//			}
-//		} catch (SQLException e) {
-//
-//			e.getStackTrace();
-//
-//		}
-//
-//		return buygoodsRtn;
-//	}
-//	public Set<Goods> searchGoods(String searchKeyword, int startRowNo, int endRowNo) {
-//		Set<Goods> goods = new LinkedHashSet<>();
-//		String sk = "%" + searchKeyword + "%";
-//		String querysql = "SELECT * FROM (SELECT ROWNUM RM ,BG.* FROM BEVERAGE_GOODS BG WHERE LOWER(GOODS_NAME) LIKE ? )WHERE RM > ? AND RM < ? ";
-//		try (Connection conn = DBConnectionFactory.getOracleDBConnection();
-//				PreparedStatement pstmt = conn.prepareStatement(querysql)) {
-//			conn.setAutoCommit(false);
-//			int count = 1;
-//			pstmt.setString(count++, sk);
-//			pstmt.setInt(count++, startRowNo);
-//			pstmt.setInt(count++, endRowNo);
-//			try (ResultSet rs = pstmt.executeQuery()) {
-//				while (rs.next()) {
-//					Goods good = new Goods();
-//					good.setGoodsID(rs.getString("GOODS_ID"));
-//					good.setGoodsImageName(rs.getString("IMAGE_NAME"));
-//					good.setGoodsName(rs.getString("GOODS_NAME"));
-//					good.setGoodsPrice(rs.getInt("PRICE"));
-//					good.setGoodsQuantity(rs.getInt("QUANTITY"));
-//					good.setStatus(rs.getString("STATUS"));
-//					goods.add(good);
-//				}
-//			} catch (SQLException e) {
-//				conn.rollback();
-//				throw e;
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return goods;
-//	}
+
 	public Goods queryByGoodsId(Long goodsId) {
 		String querysql = "SELECT * FROM BEVERAGE_GOODS WHERE GOODS_ID = ?";
 		Goods good = new Goods();

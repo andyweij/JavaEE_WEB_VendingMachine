@@ -42,11 +42,7 @@ public class MemberAction extends DispatchAction {
 		ShoppingCartGoods cartGoods=new ShoppingCartGoods();
 		cartGoods.setGoodsID(Long.parseLong(req.getParameter("goodsID")));
 		cartGoods.setBuyQuantity(Integer.parseInt(req.getParameter("buyQuantity")) );
-//		GoodsOrderForm cartgoods = (GoodsOrderForm) form;
-
-
-		// 查詢資料庫商品並且加入購物車
-		
+		// 查詢資料庫商品並且加入購物車		
 		Goods goods = frontendservice.queryByGoodsId(cartGoods.getGoodsID());
 		cartGoods.setGoodsName( goods.getGoodsName());
 		cartGoods.setGoodsPrice(goods.getGoodsPrice());

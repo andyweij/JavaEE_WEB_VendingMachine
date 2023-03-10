@@ -32,9 +32,13 @@ public class FrontendAction extends DispatchAction{
 		GoodsOrderForm goodsorderform=(GoodsOrderForm)form;	
 		HttpSession session = req.getSession();
 		ShoppingCartGoodsInfo cartGoodsInfo=(ShoppingCartGoodsInfo)session.getAttribute("cartGoodsInfo");
+		if(null==cartGoodsInfo){
+			String frontMsg="購物車無商品";
+			req.setAttribute("frontMsg", frontMsg);
+			return  mapping.findForward("vendingMachine");
+		}
 		BuyGoodsRtn buyRtn=new BuyGoodsRtn();
-		if(cartGoodsInfo.getTotalAmount()>goodsorderform.getInputMoney()){//檢查金額是否足夠
-			
+		if(cartGoodsInfo.getTotalAmount()>goodsorderform.getInputMoney()){//檢查金額是否足夠			
 			buyRtn=frontendservice.BuyGoodsRtn(goodsorderform, cartGoodsInfo);
 			return  mapping.findForward("vendingMachine");
 		}		
@@ -48,6 +52,7 @@ public class FrontendAction extends DispatchAction{
 		boolean updateResult=frontendservice.updateGoods(buyRtn,buyGoods);//更新商品庫存
 		req.setAttribute("buyRtn", buyRtn);
 		session.removeAttribute("cartGoodsInfo");
+		session.removeAttribute("shoppingCartGoods");	
 		String updateMsg=(updateResult)?"商品購買成功":"商品購買失敗";
 		return mapping.findForward("vendingMachine");
 	}

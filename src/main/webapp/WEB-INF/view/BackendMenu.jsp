@@ -3,6 +3,8 @@
 <p style="color:blue;">
 	${sessionScope.member.customerName} 先生/小姐您好!
 	<a href="LoginAction.do?action=logout" align="left">(登出)</a>
+	</br><br>
+	<a href="FrontendAction.do?action=searchGoods" align="left">商品業面</a>
 </p>
 <br/>
 <table border="1" style="border-collapse:collapse;margin-left:25px;">

@@ -13,10 +13,12 @@
 	padding-left: 10px;
 }
 </style>
+
 <script type="text/javascript">
+
 	function senfront(){
 		
-		if(Session["shoppingCartGoods"]==null){
+		if(null==Session["shoppingCartGoods"]){
 			alert('請加入商品');
 			return null;
 		}else{
@@ -25,6 +27,7 @@
 		}
 		
 	}
+
 		function addCartGoods(goodsID, buyQuantityIdx){					
 			var buyQuantity = document.getElementsByName("buyQuantity")[buyQuantityIdx].value;
 			if(buyQuantity!=0){
@@ -103,7 +106,8 @@
 		<tr>
 			<td width="400" height="200" align="center"><img border="0"
 				src="DrinksImage/coffee.jpg" width="200" height="200">
-				<h1>歡迎光臨，Tomcat！</h1> 
+				<h1>歡迎光臨，Tomcat！</h1></br> 
+				<h3>${frontMsg}</h3>
 				<a href="BackendAction.do?action=queryGoods"
 				align="left">後臺頁面</a>&nbsp; &nbsp; <a
 				href="LoginAction.do?action=logout" align="left">登出</a> <br />
@@ -114,10 +118,9 @@
 						face="微軟正黑體" size="4"> <b>投入:</b> <input type="number"
 						name="inputMoney" max="100000" min="0" size="5" value="0">
 						<b>元</b> <b><input type="submit" value="送出">
-						<br />
-						<button onclick="senfront()">送出2</button>
 						</font>
 				</form>
+				<button onclick="senfront()">test</button>
 				<div style="border-width: 3px; border-style: dashed; border-color: #FFAC55; padding: 5px; width: 300px;">
 					<p style="color: blue;">~~~~~~~ 消費明細 ~~~~~~~</p>
 					<p style="margin: 10px;">投入金額：${buyRtn.payprice}</p>
@@ -136,7 +139,7 @@
 				<table border="1" style="border-collapse: collapse">
 					<tbody>
 					<tr>
-						<c:forEach items="${goodsList}" var="good" varStatus="status">
+						<c:forEach items="${goodsList}" var="good" varStatus="status" end="2">
 								<td width="300"> 
 								<font face="微軟正黑體" size="5"> 
 								<!-- 例如: 可口可樂 30元/罐 -->
@@ -163,7 +166,36 @@
 								</font>
 								</td>
 								</c:forEach>
-							</tr>						
+							</tr>	
+							<tr>
+						<c:forEach items="${goodsList}" var="good" varStatus="status" begin="3">
+								<td width="300"> 
+								<font face="微軟正黑體" size="5"> 
+								<!-- 例如: 可口可樂 30元/罐 -->
+								${good.goodsName}
+								</font> 
+								<br/> 
+								<font face="微軟正黑體" size="4" style="color: gray;">
+								<!-- 例如: 可口可樂 30元/罐 -->
+								${good.goodsPrice} 元/罐
+								</font> 
+								<br /> 
+								<!-- 各商品圖片 --> 
+								<img border="0" src="DrinksImage/${good.goodsImageName}" width="150" height="150"> 
+									<br /> 
+									<font face="微軟正黑體" size="3">
+										<input type="hidden" name="goodsID"
+										value="${good.goodsID}"> 購買<input type="number"
+										name="buyQuantity" min="0" max="30" size="5" value="0">罐
+										<!-- 設定最多不能買大於庫存數量 --> <br>
+									<br>
+									<button onclick="addCartGoods(${good.goodsID},${goodsList.indexOf(good)})">加入購物車</button>
+										<br>											<!--${status.index} 需設varStatus -->
+									<p style="color: red;">(庫存 ${good.goodsQuantity} 罐)</p> <!-- 顯示庫存數量 -->
+								</font>
+								</td>
+								</c:forEach>
+							</tr>					
 					</tbody>
 				</table>
 			</td>
@@ -171,6 +203,7 @@
 
 		<tr>
 			<td colspan="2" align="right">
+
 			<c:forEach var="i" begin="1"
 					end="${pages.totalPages}">
 					<c:url value="/FrontendAction.do" var="page">
@@ -179,6 +212,7 @@
 						<c:param name="pageNo" value="${i}" />
 					</c:url>
 					<h3 class="page">
+					
 						<a href="${page}">${i} </a>
 					</h3>
 				</c:forEach>

@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.training.dao.FrontEndDao;
 import com.training.formbean.GoodsOrderForm;
@@ -90,7 +89,6 @@ public class FrontendService {
 	public BuyGoodsRtn BuyGoodsRtn(GoodsOrderForm goodsorderform, ShoppingCartGoodsInfo cartGoodsInfo) {
 		BuyGoodsRtn buygoodsRtn = new BuyGoodsRtn();
 		buygoodsRtn.setPayprice(goodsorderform.getInputMoney());
-//		buygoodsRtn.setTotalsprice();
 		buygoodsRtn.setReturnprice(buygoodsRtn.getPayprice()-buygoodsRtn.getTotalsprice());
 		buygoodsRtn.setshoppingCartGoods(cartGoodsInfo.getShoppingCartGoods());
 		return buygoodsRtn;
