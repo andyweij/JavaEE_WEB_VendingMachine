@@ -211,9 +211,9 @@
 						<c:param name="searchKeyword" value="${pages.searchKeyword}"/>
 						<c:param name="pageNo" value="${i}" />
 					</c:url>
-					<h3 class="page">
+					<h3 class="page" >
 					
-						<a href="${page}">${i} </a>
+						<a href="${page}" >${i} </a>
 					</h3>
 				</c:forEach>
 				</td>
