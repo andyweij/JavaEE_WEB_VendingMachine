@@ -78,7 +78,7 @@ private BackendService backendservice = BackendService.getInstance();
 		Goods good = new Goods();	
 		BeanUtils.copyProperties(good, backactionform);
 		boolean modifyResult = backendservice.modifyGood(good);
-		String message = modifyResult ? "1" : "2";
+		String message = modifyResult ? "商品資料更新成功" : "商品資料更新失敗2";
 		session.setAttribute("updateMsg", message);
 		session.setAttribute("updateGoodsID", good.getGoodsID());
 		// Redirect to view
@@ -106,7 +106,7 @@ private BackendService backendservice = BackendService.getInstance();
 		        Files.copy(fileContent, serverImgPath, StandardCopyOption.REPLACE_EXISTING);
 		    }
 		boolean createResult = backendservice.createGood(good);
-		String message = createResult ? "1" : "2";
+		String message = createResult ? "商品新增成功" : "商品新增失敗";
 		session.setAttribute("createMsg",message );
 		}catch (Exception e) {
 			e.printStackTrace();

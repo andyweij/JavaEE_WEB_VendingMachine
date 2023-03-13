@@ -15,19 +15,6 @@
 </style>
 
 <script type="text/javascript">
-
-	function senfront(){
-		
-		if(null==Session["shoppingCartGoods"]){
-			alert('請加入商品');
-			return null;
-		}else{
-			
-			document.action.submit();
-		}
-		
-	}
-
 		function addCartGoods(goodsID, buyQuantityIdx){					
 			var buyQuantity = document.getElementsByName("buyQuantity")[buyQuantityIdx].value;
 			if(buyQuantity!=0){
@@ -77,17 +64,11 @@
 			request.send(formData);	
 			alert('購物車已清空');
 		}
-		function onSelectPage(curPage){
-            if(curPage>=1 && curPage<=${pages.totalPages}){
-                if (curPage != ${pages.curPage})  {
-                	window.location.href="${pageContext.request.contextPath}/customer/queryAllSalesShippers?pageNum="+curPage;
-                }
-            }
-        }
+		
 	</script>
 </head>
 <body align="center">
-	<table width="1000" height="400" align="center">
+	<table width="1000" height="400" align="center" >
 		<tr>
 			<td colspan="2" align="right">
 				<button onclick="queryCartGoods()">購物車商品列表</button>
@@ -106,8 +87,9 @@
 		<tr>
 			<td width="400" height="200" align="center"><img border="0"
 				src="DrinksImage/coffee.jpg" width="200" height="200">
-				<h1>歡迎光臨，Tomcat！</h1></br> 
+				<h1>歡迎光臨，${member.customerName}!</h1></br> 
 				<h3>${frontMsg}</h3>
+				<% session.removeAttribute("frontMsg"); %>
 				<a href="BackendAction.do?action=queryGoods"
 				align="left">後臺頁面</a>&nbsp; &nbsp; <a
 				href="LoginAction.do?action=logout" align="left">登出</a> <br />
@@ -120,7 +102,6 @@
 						<b>元</b> <b><input type="submit" value="送出">
 						</font>
 				</form>
-				<button onclick="senfront()">test</button>
 				<div style="border-width: 3px; border-style: dashed; border-color: #FFAC55; padding: 5px; width: 300px;">
 					<p style="color: blue;">~~~~~~~ 消費明細 ~~~~~~~</p>
 					<p style="margin: 10px;">投入金額：${buyRtn.payprice}</p>
@@ -200,22 +181,23 @@
 				</table>
 			</td>
 			</tr>
-
+			
 		<tr>
 			<td colspan="2" align="right">
-
-			<c:forEach var="i" begin="1"
-					end="${pages.totalPages}">
 					<c:url value="/FrontendAction.do" var="page">
 						<c:param name="action" value="searchGoods" />
 						<c:param name="searchKeyword" value="${pages.searchKeyword}"/>
-						<c:param name="pageNo" value="${i}" />
-					</c:url>
-					<h3 class="page" >
-					
-						<a href="${page}" >${i} </a>
-					</h3>
-				</c:forEach>
+						<c:param name="pageNo" value="${pages.curPage}" />
+					</c:url>				
+					<c:if test="${pages.curPage>1}">
+					<h3 class="page" ><a href="FrontendAction.do?action=searchGoods&searchKeyword=${pages.searchKeyword}&pageNo=${pages.curPage-1}" >上一頁</a></h3>
+					<h3 class="page" ><a href="FrontendAction.do?action=searchGoods&searchKeyword=${pages.searchKeyword}&pageNo=${pages.curPage-1}" >${pages.curPage-1}</a></h3>
+					</c:if>
+					<h3 class="page" ><a href="${page}" >${pages.curPage} </a></h3>
+					<c:if test="${pages.curPage<pages.totalPages}">
+					<h3 class="page" ><a href="FrontendAction.do?action=searchGoods&searchKeyword=${pages.searchKeyword}&pageNo=${pages.curPage+1}" >${pages.curPage+1} </a></h3>
+					<h3 class="page" ><a href="FrontendAction.do?action=searchGoods&searchKeyword=${pages.searchKeyword}&pageNo=${pages.curPage+1}" >下一頁</a></h3>
+					</c:if>					
 				</td>
 		</tr>
 	</table>

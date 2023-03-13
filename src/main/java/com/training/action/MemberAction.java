@@ -36,9 +36,7 @@ public class MemberAction extends DispatchAction {
 	private FrontendService frontendservice = FrontendService.getInstance();
 
 	public ActionForward addCartGoods(ActionMapping mapping, ActionForm form, HttpServletRequest req,
-			HttpServletResponse response) throws IOException {
-
-		
+			HttpServletResponse response) throws IOException {	
 		ShoppingCartGoods cartGoods=new ShoppingCartGoods();
 		cartGoods.setGoodsID(Long.parseLong(req.getParameter("goodsID")));
 		cartGoods.setBuyQuantity(Integer.parseInt(req.getParameter("buyQuantity")) );
@@ -82,8 +80,10 @@ public class MemberAction extends DispatchAction {
 		}else {
 			System.out.println("-----購物車商品-----");
 			shoppingCartGoods.stream().forEach(i->System.out.println( "商品編號:"+i.getGoodsID()+"\n商品名稱:"+i.getGoodsName()+"\n商品價格:"+i.getGoodsPrice()+"\n購買數量:"+i.getBuyQuantity()));
+			shoppingCartGoods.stream().forEach(g->g.setGoodsPrice(frontendservice.queryByGoodsId(g.getGoodsID()).getGoodsPrice()));
 			cartGoodsInfo.setShoppingCartGoods(shoppingCartGoods.stream().collect(Collectors.toSet()));
 			cartGoodsInfo.setTotalAmount(shoppingCartGoods.stream().mapToInt(s->s.getGoodsPrice()*s.getBuyQuantity()).sum());
+			
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("application/json");
 			PrintWriter out = response.getWriter();	

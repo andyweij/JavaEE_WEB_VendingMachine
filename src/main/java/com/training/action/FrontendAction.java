@@ -40,6 +40,8 @@ public class FrontendAction extends DispatchAction{
 		BuyGoodsRtn buyRtn=new BuyGoodsRtn();
 		if(cartGoodsInfo.getTotalAmount()>goodsorderform.getInputMoney()){//檢查金額是否足夠			
 			buyRtn=frontendservice.BuyGoodsRtn(goodsorderform, cartGoodsInfo);
+			String frontMsg="投入金額不足";
+			session.setAttribute("frontMsg",frontMsg );
 			return  mapping.findForward("vendingMachine");
 		}		
 		Member mem=(Member)session.getAttribute("member");
@@ -53,7 +55,8 @@ public class FrontendAction extends DispatchAction{
 		req.setAttribute("buyRtn", buyRtn);
 		session.removeAttribute("cartGoodsInfo");
 		session.removeAttribute("shoppingCartGoods");	
-		String updateMsg=(updateResult)?"商品購買成功":"商品購買失敗";
+		String frontMsg="商品購買成功";
+		session.setAttribute("frontMsg",frontMsg );
 		return mapping.findForward("vendingMachine");
 	}
 	
@@ -76,18 +79,18 @@ public class FrontendAction extends DispatchAction{
 		
 		return mapping.findForward("vendingMachine");
 	}
-	
-	public ActionForward pagInation(ActionMapping mapping, ActionForm form, 
-	        HttpServletRequest req, HttpServletResponse resp) throws IOException {	
-		//查詢資料庫資料筆數		
-		List<Goods> allgoods = frontendservice.queryAllGoods();
-	
-			return mapping.findForward("vendingMachine");
-		}
-
-		public ActionForward queryallGoods(ActionMapping mapping, ActionForm form, HttpServletRequest req,
-				HttpServletResponse resp) throws IOException {
-
-			return mapping.findForward("vendingMachine");
-		}
+//	
+//	public ActionForward pagInation(ActionMapping mapping, ActionForm form, 
+//	        HttpServletRequest req, HttpServletResponse resp) throws IOException {	
+//		//查詢資料庫資料筆數		
+//		List<Goods> allgoods = frontendservice.queryAllGoods();
+//	
+//			return mapping.findForward("vendingMachine");
+//		}
+//
+//		public ActionForward queryallGoods(ActionMapping mapping, ActionForm form, HttpServletRequest req,
+//				HttpServletResponse resp) throws IOException {
+//
+//			return mapping.findForward("vendingMachine");
+//		}
 }

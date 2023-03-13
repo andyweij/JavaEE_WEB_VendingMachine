@@ -188,7 +188,7 @@ public class FrontEndDao {
 		}else {		
 		int endRowNo=Integer.parseInt(pageNo)*6;
 		int startRowNo=endRowNo-5;
-		querysql += " WHERE ROW_NUM >= "+startRowNo+" AND ROW_NUM <= "+endRowNo;
+		querysql += " WHERE ROW_NUM >= "+startRowNo+" AND ROW_NUM <= "+endRowNo+"AND STATUS=1 ";
 		}		
 		try (Connection conn = DBConnectionFactory.getOracleDBConnection();
 				PreparedStatement pstmt = conn.prepareStatement(querysql)) {
@@ -218,7 +218,7 @@ public class FrontEndDao {
 	}
 	public List<Goods> queryAllGoods(){
 		List<Goods> goods=new ArrayList<>();
-		String querysql = "SELECT * FROM BEVERAGE_GOODS ";
+		String querysql = "SELECT * FROM BEVERAGE_GOODS WHERE status=1 ";
 		try (Connection conn = DBConnectionFactory.getOracleDBConnection();
 				PreparedStatement pstmt = conn.prepareStatement(querysql)) {
 			conn.setAutoCommit(false);
