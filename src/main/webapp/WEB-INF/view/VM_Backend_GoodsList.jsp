@@ -20,6 +20,53 @@
 	<h2>商品列表</h2>
 	<br />
 	<div style="margin-left: 25px;">
+	<form action="BackendAction.do" method="get">
+	<input type="hidden" name="action" value="goodsSearch"/>
+	<table>
+	<tr>
+	<td>商品編號</td>
+	<td>商品名稱(不區分大小寫)</td>
+	</tr>
+	<tr>
+	<td><input type="text" name="goodsNo" id="goodsNo" value="" ></td>
+	<td><input type="text" name="goodsName" id="goodsName" value="" ></td>
+</tr>
+<tr>
+	<td>商品最低價格</td>
+	<td>商品最高價格</td>
+	<td>價格排序</td>
+</tr>
+<tr>
+	<td><input type="text" name="pricemax" id="pricemax" value="" ></td>
+	<td><input type="text" name="pricemin" id="pricemin" value="" ></td>
+	<td>
+	<select id="pricesort" name="price">
+	<option value="">無</option>
+	<option value="0">價格由高到低</option>
+	<option value="1">價格由低到高</option>
+	</select>
+	</td>
+</tr>
+<tr>
+	<td>商品低於庫存量</td>
+	<td>商品狀態</td>
+</tr>
+<tr>
+	<td><input type="text" name="stockQuantity" id="stockQuantity" value="" ></td>
+	<td>
+	<select id="goodsstatus" name="price">
+	<option value="">All</option>
+	<option value="0">上架</option>
+	<option value="1">下架</option>
+	</select>
+	</td>
+	<td><input type="submit" value="查詢"></td>
+</tr>	
+	</table>
+	</form>
+	</div>
+	<br/>
+	<div style="margin-left: 25px;">
 		<table border="1">
 			<tbody>
 				<tr height="50" align="center">

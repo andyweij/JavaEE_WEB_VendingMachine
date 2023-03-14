@@ -108,4 +108,10 @@ public class BackendAction extends DispatchAction{
 		// Redirect to view
 		return mapping.findForward("backendGoodsSaleReport");
 	}
+	public ActionForward goodsSearch (ActionMapping mapping, ActionForm form, 
+    HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		
+		
+		return mapping.findForward("backendGoodsList");
+	}
 }
