@@ -25,6 +25,7 @@ import org.apache.struts.upload.FormFile;
 import com.training.formbean.BackActionForm;
 import com.training.model.Goods;
 import com.training.service.BackendService;
+import com.training.vo.PageSearchKey;
 import com.training.vo.SalesReport;
 
 import net.sf.json.JSONObject;
@@ -127,4 +128,15 @@ private BackendService backendservice = BackendService.getInstance();
 		// Redirect to view
 		return mapping.findForward("backendGoodsSaleReport");
 	}
+	public ActionForward goodsSearch (ActionMapping mapping, ActionForm form, 
+		    HttpServletRequest req, HttpServletResponse resp) throws Exception {
+				HttpSession session = req.getSession();		
+				BackActionForm backactionform=(BackActionForm)form;
+				PageSearchKey pagesearchkey=new PageSearchKey();
+				BeanUtils.copyProperties(pagesearchkey, backactionform);
+				List<Goods> goodsList=backendservice.queryGoodsBykey(pagesearchkey);
+				session.setAttribute("goodsList", goodsList);
+				
+				return mapping.findForward("backendGoodsList");
+			}
 }

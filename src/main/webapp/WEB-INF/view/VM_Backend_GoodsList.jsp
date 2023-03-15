@@ -40,7 +40,7 @@
 	<td><input type="text" name="priceMax" id="priceMax" value="" ></td>
 	<td><input type="text" name="priceMin" id="priceMin" value="" ></td>
 	<td>
-	<select id="priceOrder" name="price">
+	<select id="priceOrder" name="priceOrder">
 	<option value="">無</option>
 	<option value="0">價格由高到低</option>
 	<option value="1">價格由低到高</option>
@@ -93,7 +93,7 @@
 						<c:param name="searchKeyword" value="${pages.searchKeyword}"/>
 						<c:param name="pageNo" value="${pages.curPage}" />
 					</c:url>				
-					<c:forEach var i=1 begin="0" end="5"> 
+					<c:forEach var="i" begin="0" end="5"> 
 					<h3 class="page" ><a href="${page}" >i</a></h3>
 					</c:forEach>
 					
