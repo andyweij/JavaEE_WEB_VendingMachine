@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.training.dao.BackEndDao;
 import com.training.model.Goods;
+import com.training.vo.PageSearchKey;
 import com.training.vo.SalesReport;
 
 public class BackendService {
@@ -42,6 +43,9 @@ public class BackendService {
 	public Goods queryGoodsById(String goodsId) {
 		
 		return backenddao.queryGoods(goodsId);
-
+	}
+	public List<Goods> queryGoodsBykey(PageSearchKey pagesearchkey) {
+		
+		return backenddao.queryGoodsBykey(pagesearchkey);
 	}
 }

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.training.model.Goods;
+import com.training.vo.PageSearchKey;
 import com.training.vo.SalesReport;
 
 public class BackEndDao {
@@ -22,6 +23,7 @@ public class BackEndDao {
 	public List<Goods> queryGoods() {
 		List<Goods> goods = new ArrayList<>();
 		// querySQL SQL
+
 		String querySQL = "SELECT goods_id , goods_name , description , price , quantity , image_name , status FROM beverage_goods ";
 		// Step1:取得Connection
 		try (Connection conn = DBConnectionFactory.getOracleDBConnection();
@@ -182,4 +184,37 @@ public class BackEndDao {
 
 		return good;
 	}
+	public List<Goods> queryGoodsBykey(PageSearchKey pagesearchkey) {
+		Goods good=new Goods();
+		List<Goods> goods = new ArrayList<>();
+		String pricemin="and price < ";
+		String pricemax="and price > ";
+		String pricerange="and price between ? and ? ";
+		String status="and status = ";
+		String order=" order by price desc ";
+		String querySQL = "SELECT * FROM beverage_goods WHERE  goods_id like '%?%' and  lower(goods_name) like lower('%?%') ";
+		// Step1:取得Connection
+		try (Connection conn = DBConnectionFactory.getOracleDBConnection();
+				// Step2:Create prepareStatement For SQL
+				PreparedStatement stmt = conn.prepareStatement(querySQL);){
+			
+//			stmt.setString(1,goodsId);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				good.setGoodsID(rs.getString("GOODS_ID"));
+				good.setGoodsName(rs.getString("GOODS_NAME"));
+				good.setGoodsImageName(rs.getNString("image_name"));
+				good.setDESCRIPTION(rs.getNString("description"));
+				good.setGoodsPrice(rs.getInt("price"));
+				good.setGoodsQuantity(rs.getInt("quantity"));
+				good.setStatus(rs.getNString("status"));
+				goods.add(good);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return goods;
+	}
+
 }

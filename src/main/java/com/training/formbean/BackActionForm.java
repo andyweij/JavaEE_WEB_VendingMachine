@@ -16,10 +16,42 @@ public class BackActionForm extends ActionForm{
 	private String status;
 	private String queryStartDate;
 	private String queryEndDate;
-	
+	private String priceMax;
+	private String priceMin;
+	private String priceOrder;
+	private String stockQuantity;
 
+	public String getPriceMax() {
+		return priceMax;
+	}
 
+	public void setPriceMax(String priceMax) {
+		this.priceMax = priceMax;
+	}
 
+	public String getPriceMin() {
+		return priceMin;
+	}
+
+	public void setPriceMin(String priceMin) {
+		this.priceMin = priceMin;
+	}
+
+	public String getPriceOrder() {
+		return priceOrder;
+	}
+
+	public void setPriceOrder(String priceOrder) {
+		this.priceOrder = priceOrder;
+	}
+
+	public String getStockQuantity() {
+		return stockQuantity;
+	}
+
+	public void setStockQuantity(String stockQuantity) {
+		this.stockQuantity = stockQuantity;
+	}
 
 	public FormFile getGoodsImage() {
 		return goodsImage;

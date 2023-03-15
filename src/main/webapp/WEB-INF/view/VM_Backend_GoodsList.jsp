@@ -28,7 +28,7 @@
 	<td>商品名稱(不區分大小寫)</td>
 	</tr>
 	<tr>
-	<td><input type="text" name="goodsNo" id="goodsNo" value="" ></td>
+	<td><input type="text" name="goodsID" id="goodsNo" value="" ></td>
 	<td><input type="text" name="goodsName" id="goodsName" value="" ></td>
 </tr>
 <tr>
@@ -37,10 +37,10 @@
 	<td>價格排序</td>
 </tr>
 <tr>
-	<td><input type="text" name="pricemax" id="pricemax" value="" ></td>
-	<td><input type="text" name="pricemin" id="pricemin" value="" ></td>
+	<td><input type="text" name="priceMax" id="priceMax" value="" ></td>
+	<td><input type="text" name="priceMin" id="priceMin" value="" ></td>
 	<td>
-	<select id="pricesort" name="price">
+	<select id="priceOrder" name="price">
 	<option value="">無</option>
 	<option value="0">價格由高到低</option>
 	<option value="1">價格由低到高</option>
@@ -55,7 +55,7 @@
 	<td><input type="text" name="stockQuantity" id="stockQuantity" value="" ></td>
 	<td>
 	<select id="goodsstatus" name="price">
-	<option value="">All</option>
+	<option value="2">All</option>
 	<option value="0">上架</option>
 	<option value="1">下架</option>
 	</select>
@@ -86,6 +86,20 @@
 					</tr>
 				</c:forEach>
 			</tbody>
+				<tr>
+			<td colspan="2" align="right">
+					<c:url value="/BackendAction.do" var="page">
+						<c:param name="action" value="queryGoods" />
+						<c:param name="searchKeyword" value="${pages.searchKeyword}"/>
+						<c:param name="pageNo" value="${pages.curPage}" />
+					</c:url>				
+					<c:forEach var i=1 begin="0" end="5"> 
+					<h3 class="page" ><a href="${page}" >i</a></h3>
+					</c:forEach>
+					
+				
+				</td>
+		</tr>
 		</table>
 	</div>
 </body>

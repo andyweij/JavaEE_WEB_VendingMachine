@@ -52,12 +52,12 @@ public class FrontendAction extends DispatchAction{
 		buyRtn=frontendservice.stockQuantity(buyRtn, buyGoods);	//檢查庫存是否足夠
 		boolean createResult=frontendservice.createGoodsOrder(buyRtn);//建立訂單
 		boolean updateResult=frontendservice.updateGoods(buyRtn,buyGoods);//更新商品庫存
-		req.setAttribute("buyRtn", buyRtn);
+		session.setAttribute("buyRtn", buyRtn);
 		session.removeAttribute("cartGoodsInfo");
 		session.removeAttribute("shoppingCartGoods");	
 		String frontMsg="商品購買成功";
 		session.setAttribute("frontMsg",frontMsg );
-		return mapping.findForward("vendingMachine");
+		return mapping.findForward("vendingMachineview");
 	}
 	
 	public ActionForward searchGoods(ActionMapping mapping, ActionForm form, 

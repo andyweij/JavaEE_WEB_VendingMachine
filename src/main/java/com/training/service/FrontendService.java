@@ -73,7 +73,7 @@ public class FrontendService {
 		Pagination pages = new Pagination();
 		pages.setPageSize(6);//每頁顯示筆數
 		pages.setSearchKeyword(searchkeyword);	
-		if(null==pageNo||""==pageNo){
+		if(null==pageNo||pageNo==""){
 			pages.setCurPage(1);
 		}else{
 		pages.setCurPage(Integer.parseInt(pageNo));
@@ -93,9 +93,7 @@ public class FrontendService {
 		buygoodsRtn.setshoppingCartGoods(cartGoodsInfo.getShoppingCartGoods());
 		return buygoodsRtn;
 	}
-	public Goods queryByGoodsId(Long GoodsId) {
-		return frontenddao.queryByGoodsId(GoodsId);
-	}
+
 
 	public List<Goods> pageSearch(String searchKeyword, String pageNo) {
 		return frontenddao.pageSerach(searchKeyword, pageNo);

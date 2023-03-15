@@ -13,12 +13,15 @@
         <action path="/FrontendAction" type="com.training.action.FrontendAction" 
         		parameter="action" name="goodsorderform">
         	<forward name="vendingMachine" path="/WEB-INF/view/VendingMachineCart.jsp" />
-            <forward name="vendingMachineview" path="/WEB-INF/view/VendingMachineCart.jsp"/>
+            <forward name="vendingMachineview" path="FrontendAction.do?action=searchGoods" redirect="true"/>
             
         </action>
         
           <action path="/BackendAction" type="com.training.action.BackendActionAjax" parameter="action" name="backactionform">
        <!--<action path="/BackendAction" type="com.training.action.BackendAction" parameter="action" name="backactionform">  --> 
+           	
+           	<forward name="backendGoodsList" path="/WEB-INF/view/VM_Backend_GoodsList.jsp"/>
+           
            
             <forward name="backendGoodsReplenishment" path="BackendAction.do?action=updateGoodsview" redirect="true"/>
          <!--<forward name="backendGoodsReplenishmentview" path="/WEB-INF/view/VM_Backend_GoodsReplenishment.jsp"/>  -->   

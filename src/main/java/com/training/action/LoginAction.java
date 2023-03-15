@@ -3,16 +3,18 @@ package com.training.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
-import com.training.dao.FrontEndDao;
+
+import com.training.dao.MemberDao;
 import com.training.model.Member;
 
 public class LoginAction extends DispatchAction {
 	
-	private static FrontEndDao frontenddao = FrontEndDao.getInstance();
+	private static MemberDao memberDao = MemberDao.getInstance();
 	
 	/**
 	 * info:這是負責"登入"的action method
@@ -32,7 +34,7 @@ public class LoginAction extends DispatchAction {
         String inputPwd = req.getParameter("pwd");
         String loginMsg = null;
         // Step2:依使用者所輸入的帳戶名稱取得 Member
-        Member member= frontenddao.ByIdentificationNo(inputID);
+        Member member= memberDao.ByIdentificationNo(inputID);
     	if(member != null) {
     		// Step3:取得帳戶後進行帳號、密碼比對
     		String id = member.getIdentificationNo();    		

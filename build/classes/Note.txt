@@ -32,3 +32,42 @@ A124243295
 	 maxWaitMillis="-1"
    />
 </Context>
+
+
+BackEndSQL
+
+SELECT * FROM beverage_goods WHERE PRICE > ? ;
+
+SELECT * FROM beverage_goods WHERE PRICE < ? ;
+
+SELECT * FROM beverage_goods WHERE price between ? and ? ;
+
+SELECT * FROM beverage_goods order by price desc;(高到低)
+
+SELECT * FROM beverage_goods WHERE quantity < ? ;
+
+SELECT * FROM beverage_goods WHERE status = ? ;
+
+SELECT * FROM beverage_goods WHERE  lower(goods_name) like lower('%?%') ;
+
+SELECT * FROM beverage_goods WHERE  goods_id like '%?%' ;
+
+SELECT * FROM beverage_goods WHERE  goods_id like '%?%' and  lower(goods_name) like lower('%?%') and status = ? and price between ? and ? order by price desc ;
+and status = ? 
+and price between ? and ?
+----------------------------------------------
+SELECT goods_id , goods_name , description , price, quantity , image_name , status FROM beverage_goods WHERE PRICE > ? ;
+
+SELECT goods_id , goods_name , description , price, quantity , image_name , status FROM beverage_goods WHERE PRICE < ? ;
+
+SELECT goods_id , goods_name , description , price, quantity , image_name , status FROM beverage_goods WHERE price between ? and ? ;
+
+SELECT goods_id , goods_name , description , price, quantity , image_name , status FROM beverage_goods order by price desc;
+
+SELECT goods_id , goods_name , description , price, quantity , image_name , status FROM beverage_goods WHERE quantity < ? ;
+
+SELECT goods_id , goods_name , description , price, quantity , image_name , status FROM beverage_goods WHERE status = ? ;
+
+SELECT goods_id , goods_name , description , price, quantity , image_name , status FROM beverage_goods WHERE  lower(goods_name) like lower('%?%') ;
+
+SELECT goods_id , goods_name , description , price, quantity , image_name , status FROM beverage_goods WHERE  goods_id like '%?%' ;

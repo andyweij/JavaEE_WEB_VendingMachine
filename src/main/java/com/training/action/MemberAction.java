@@ -3,11 +3,7 @@ package com.training.action;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.servlet.annotation.MultipartConfig;
@@ -15,25 +11,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
 
-import com.training.dao.FrontEndDao;
-import com.training.formbean.GoodsOrderForm;
 import com.training.model.Goods;
-import com.training.service.FrontendService;
+import com.training.service.MemberService;
 import com.training.vo.ShoppingCartGoods;
 import com.training.vo.ShoppingCartGoodsInfo;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 @MultipartConfig
 public class MemberAction extends DispatchAction {
 
-	private FrontendService frontendservice = FrontendService.getInstance();
+	private MemberService memberservice = MemberService.getInstance();
 
 	public ActionForward addCartGoods(ActionMapping mapping, ActionForm form, HttpServletRequest req,
 			HttpServletResponse response) throws IOException {	
@@ -41,7 +35,7 @@ public class MemberAction extends DispatchAction {
 		cartGoods.setGoodsID(Long.parseLong(req.getParameter("goodsID")));
 		cartGoods.setBuyQuantity(Integer.parseInt(req.getParameter("buyQuantity")) );
 		// 查詢資料庫商品並且加入購物車		
-		Goods goods = frontendservice.queryByGoodsId(cartGoods.getGoodsID());
+		Goods goods = memberservice.queryByGoodsId(cartGoods.getGoodsID());
 		cartGoods.setGoodsName( goods.getGoodsName());
 		cartGoods.setGoodsPrice(goods.getGoodsPrice());
 		System.out.println("goodsID:" + cartGoods.getGoodsID());
@@ -80,7 +74,7 @@ public class MemberAction extends DispatchAction {
 		}else {
 			System.out.println("-----購物車商品-----");
 			shoppingCartGoods.stream().forEach(i->System.out.println( "商品編號:"+i.getGoodsID()+"\n商品名稱:"+i.getGoodsName()+"\n商品價格:"+i.getGoodsPrice()+"\n購買數量:"+i.getBuyQuantity()));
-			shoppingCartGoods.stream().forEach(g->g.setGoodsPrice(frontendservice.queryByGoodsId(g.getGoodsID()).getGoodsPrice()));
+			shoppingCartGoods.stream().forEach(g->g.setGoodsPrice(memberservice.queryByGoodsId(g.getGoodsID()).getGoodsPrice()));
 			cartGoodsInfo.setShoppingCartGoods(shoppingCartGoods.stream().collect(Collectors.toSet()));
 			cartGoodsInfo.setTotalAmount(shoppingCartGoods.stream().mapToInt(s->s.getGoodsPrice()*s.getBuyQuantity()).sum());
 			
