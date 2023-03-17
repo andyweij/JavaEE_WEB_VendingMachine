@@ -2,9 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<c:url value="/" var="WEB_PATH"/>
+<c:url value="/js" var="JS_PATH"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<script src="${JS_PATH}/jquery-1.11.1.min.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>FrontEnd</title>
 <style type="text/css">
@@ -13,8 +16,13 @@
 	padding-left: 10px;
 }
 </style>
-
 <script type="text/javascript">
+$(document).ready(function(){
+	
+	$('#btnID').click(function() {
+		$('#showmsg').toggle("slow");
+	})
+});
 		function addCartGoods(goodsID, buyQuantityIdx){					
 			var buyQuantity = document.getElementsByName("buyQuantity")[buyQuantityIdx].value;
 			if(buyQuantity!=0){
@@ -64,7 +72,7 @@
 			request.send(formData);	
 			alert('購物車已清空');
 		}
-		
+	
 	</script>
 </head>
 <body align="center">
@@ -102,7 +110,8 @@
 						<b>元</b> <b><input type="submit" value="送出">
 						</font>
 				</form>
-				<div style="border-width: 3px; border-style: dashed; border-color: #FFAC55; padding: 5px; width: 300px;">
+					<input  type="button" id="btnID" value="ShowList"/>
+				<div id="showmsg" style="border-width: 3px; border-style: dashed; border-color: #FFAC55; padding: 5px; width: 300px;">
 					<p style="color: blue;">~~~~~~~ 消費明細 ~~~~~~~</p>
 					<p style="margin: 10px;">投入金額：${buyRtn.payprice}</p>
 					<p style="margin: 10px;">購買金額：${buyRtn.totalsprice}</p>
@@ -113,8 +122,9 @@
 					商品金額:${goodsinfo.goodsPrice}</br>
 					商品數量:${goodsinfo.buyQuantity}</br>
 					</p>
-					</c:forEach>
+					</c:forEach>					
 				</div>
+				
 				</td>			
 			<td width="600" height="400">
 				<table border="1" style="border-collapse: collapse">
@@ -180,8 +190,7 @@
 					</tbody>
 				</table>
 			</td>
-			</tr>
-			
+			</tr>			
 		<tr>
 			<td colspan="2" align="right">
 					<c:url value="/FrontendAction.do" var="page">

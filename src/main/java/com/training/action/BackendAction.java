@@ -116,8 +116,8 @@ public class BackendAction extends DispatchAction{
 		BackActionForm backactionform=(BackActionForm)form;
 		PageSearchKey pagesearchkey=new PageSearchKey();
 		BeanUtils.copyProperties(pagesearchkey, backactionform);
-		List<Goods> goodsList=backendservice.queryGoodsBykey(pagesearchkey);
-		session.setAttribute("goodsList", goodsList);
+		List<Goods> goods=backendservice.queryGoodsBykey(pagesearchkey);
+		session.setAttribute("goods", goods);
 		
 		return mapping.findForward("backendGoodsList");
 	}

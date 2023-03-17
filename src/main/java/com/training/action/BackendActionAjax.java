@@ -130,12 +130,13 @@ private BackendService backendservice = BackendService.getInstance();
 	}
 	public ActionForward goodsSearch (ActionMapping mapping, ActionForm form, 
 		    HttpServletRequest req, HttpServletResponse resp) throws Exception {
-				HttpSession session = req.getSession();		
+				HttpSession session = req.getSession();	
+				session.removeAttribute("goods");
 				BackActionForm backactionform=(BackActionForm)form;
 				PageSearchKey pagesearchkey=new PageSearchKey();
 				BeanUtils.copyProperties(pagesearchkey, backactionform);
 				List<Goods> goodsList=backendservice.queryGoodsBykey(pagesearchkey);
-				session.setAttribute("goodsList", goodsList);
+				session.setAttribute("goods", goodsList);
 				
 				return mapping.findForward("backendGoodsList");
 			}

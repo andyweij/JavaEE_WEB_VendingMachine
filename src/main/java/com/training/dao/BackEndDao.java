@@ -185,22 +185,63 @@ public class BackEndDao {
 		return good;
 	}
 	public List<Goods> queryGoodsBykey(PageSearchKey pagesearchkey) {
-		Goods good=new Goods();
+		
 		List<Goods> goods = new ArrayList<>();
-		String pricemin="and price < ";
-		String pricemax="and price > ";
-		String pricerange="and price between ? and ? ";
-		String status="and status = ";
-		String order=" order by price desc ";
-		String querySQL = "SELECT * FROM beverage_goods WHERE  goods_id like '%?%' and  lower(goods_name) like lower('%?%') ";
+		PageSearchKey searchkey=pagesearchkey;
+		String querySQL = " SELECT * FROM beverage_goods WHERE  goods_id like ? and  lower(goods_name) like lower(?) ";
+		String goodsId;
+		String goodsName;
+		String pricemin;
+		String pricemax;
+		String status;
+		String order;
+		if(null==searchkey.getGoodsID()||"".equals(searchkey.getGoodsID())){
+			goodsId="%%";
+		}else{
+			goodsId="%"+searchkey.getGoodsID()+"%";
+			
+		}	
+		if(null==searchkey.getGoodsName()||"".equals(searchkey.getGoodsName())){
+			goodsName="%%";
+		}else{
+			goodsName="%"+searchkey.getGoodsName()+"%";
+			
+		}
+		
+		if(!searchkey.getGoodstatus().isEmpty()){
+			status=" and status = "+searchkey.getGoodstatus();
+			querySQL+=status;
+		}
+		
+		if(!searchkey.getPriceMin().isEmpty()&&!searchkey.getPriceMax().isEmpty()){
+			String pricerange=" and price between "+searchkey.getPriceMin()+" and "+searchkey.getPriceMax() ;
+			querySQL+=pricerange;
+		}else{
+			if(!searchkey.getPriceMin().isEmpty()){
+				pricemin=" and price < "+searchkey.getPriceMin();
+				querySQL+=pricemin;			
+			}else if(!searchkey.getPriceMax().isEmpty()){
+				pricemax=" and price > "+searchkey.getPriceMax();
+				querySQL+=pricemax;
+			}
+		}
+		if(searchkey.getPriceOrder().equals("0")){
+			order=" order by price desc ";
+			querySQL+=order;
+		}else if(searchkey.getPriceOrder().equals("1")){
+			order=" order by price ";
+			querySQL+=order;
+		}
 		// Step1:取得Connection
 		try (Connection conn = DBConnectionFactory.getOracleDBConnection();
 				// Step2:Create prepareStatement For SQL
 				PreparedStatement stmt = conn.prepareStatement(querySQL);){
-			
-//			stmt.setString(1,goodsId);
+			int count=1;
+			stmt.setString(count++,goodsId);
+			stmt.setString(count++,goodsName);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
+				Goods good=new Goods();
 				good.setGoodsID(rs.getString("GOODS_ID"));
 				good.setGoodsName(rs.getString("GOODS_NAME"));
 				good.setGoodsImageName(rs.getNString("image_name"));

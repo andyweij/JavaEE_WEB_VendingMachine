@@ -20,6 +20,16 @@ public class BackActionForm extends ActionForm{
 	private String priceMin;
 	private String priceOrder;
 	private String stockQuantity;
+	private String goodstatus;
+	
+
+	public String getGoodstatus() {
+		return goodstatus;
+	}
+
+	public void setGoodstatus(String goodstatus) {
+		this.goodstatus = goodstatus;
+	}
 
 	public String getPriceMax() {
 		return priceMax;
