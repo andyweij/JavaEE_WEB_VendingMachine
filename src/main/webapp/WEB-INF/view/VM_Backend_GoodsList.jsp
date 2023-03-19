@@ -20,6 +20,20 @@
 </script>
 </head>
 <body>
+	<tr>
+		<td colspan="2" align="right">		
+					<c:url value="/BackendAction.do" var="page">
+						<c:param name="action" value="goodsSearch" />
+						<c:param name="pageNo" value="${pages.curPage}" />
+						</c:url>
+						
+		<c:forEach var="i" begin="1" end="${pages.totalPages}">
+			<h3 class="page"><a href="${page}" >${pages.curPage}</a></h3>
+			<h3 class="page"><a href="${page}" >${pages.curPage+1}</a></h3>
+		</c:forEach>
+		</td>
+		</tr>
+<table>
 	<%@ include file="BackendMenu.jsp"%>
 	<br />
 	<br />
@@ -85,6 +99,8 @@
 					<td width="100"><b>商品庫存</b></td>
 					<td width="100"><b>商品狀態</b></td>
 				</tr>
+				
+				
 				<c:forEach items="${goods}" var="goods">
 					<tr height="30" align="center">
 						<td>${goods.goodsID}</td>
@@ -93,9 +109,15 @@
 						<td>${goods.goodsQuantity}</td>
 						<td>${goods.status}</td>
 					</tr>
+					
 				</c:forEach>
 			</tbody>
+			<tr>			
+		</tr>
 		</table>
+		</div>
+	
+</table>
 		<%-- 
 <tr>
 		<td colspan="2" align="right">
@@ -116,6 +138,6 @@
 				</td>
 </tr>
 --%>
-	</div>
+	
 </body>
 </html>

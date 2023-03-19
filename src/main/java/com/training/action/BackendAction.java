@@ -26,6 +26,7 @@ import com.training.formbean.BackActionForm;
 import com.training.model.Goods;
 import com.training.service.BackendService;
 import com.training.vo.PageSearchKey;
+import com.training.vo.Pagination;
 import com.training.vo.SalesReport;
 @MultipartConfig
 public class BackendAction extends DispatchAction{
@@ -36,7 +37,9 @@ public class BackendAction extends DispatchAction{
             HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		List<Goods> goods = backendservice.queryGoods();
 		String pageNo=req.getParameter("pageNo");
-		int goodpages=(int)Math.ceil(goods.size()/5);
+		Pagination pages=backendservice.pagInation(pageNo);
+		req.setAttribute("pages", pages);
+//		int goodpages=(int)Math.ceil(goods.size()/5);
 		req.setAttribute("goods", goods);
 		goods.stream().forEach(a -> System.out.println(a.toString()));
 		// Redirect to view
