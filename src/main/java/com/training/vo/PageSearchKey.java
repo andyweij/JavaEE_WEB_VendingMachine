@@ -8,7 +8,14 @@ public class PageSearchKey {
 	private String priceOrder;
 	private String stockQuantity;
 	private String goodstatus;
+	private String pageNo;
 	
+	public String getPageNo() {
+		return pageNo;
+	}
+	public void setPageNo(String pageNo) {
+		this.pageNo = pageNo;
+	}
 	public String getGoodstatus() {
 		return goodstatus;
 	}

@@ -55,6 +55,7 @@ SELECT * FROM beverage_goods WHERE  goods_id like '%?%' ;
 SELECT * FROM beverage_goods WHERE  goods_id like '%?%' and  lower(goods_name) like lower('%?%') and status = ? and price between ? and ? order by price desc ;
 and status = ? 
 and price between ? and ?
+SELECT * FROM(SELECT ROWNUM ROW_NUM,BG.* FROM beverage_goods BG WHERE goods_id like '%1%' and  lower(goods_name) like lower('%a%') and status = 1 and QUANTITY < 20 and price between 10 and 150 order by price desc) WHERE ROW_NUM >=0 AND ROW_NUM < 6;
 ----------------------------------------------
 SELECT goods_id , goods_name , description , price, quantity , image_name , status FROM beverage_goods WHERE PRICE > ? ;
 

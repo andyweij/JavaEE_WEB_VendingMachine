@@ -36,7 +36,10 @@ private BackendService backendservice = BackendService.getInstance();
 	
 	public ActionForward queryGoods(ActionMapping mapping, ActionForm form, 
             HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		List<Goods> goods = backendservice.queryGoods();
+//		List<Goods> goods = backendservice.queryGoods();
+		PageSearchKey pagesearchkey=new PageSearchKey();
+		pagesearchkey.setPageNo(req.getParameter("pageNo"));
+		List<Goods> goods = backendservice.queryGoodsBykey(pagesearchkey);
 		String pageNo=req.getParameter("pageNo");
 		Pagination pages=backendservice.pagInation(pageNo);
 		req.setAttribute("pages", pages);
@@ -140,6 +143,7 @@ private BackendService backendservice = BackendService.getInstance();
 				PageSearchKey pagesearchkey=new PageSearchKey();
 				BeanUtils.copyProperties(pagesearchkey, backactionform);
 				List<Goods> goodsList=backendservice.queryGoodsBykey(pagesearchkey);
+				req.setAttribute("pagesearchkey", pagesearchkey);
 				session.setAttribute("goods", goodsList);
 				
 				return mapping.findForward("backendGoodsList");

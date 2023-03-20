@@ -14,44 +14,28 @@
 <meta http-equiv="Content-Language" content="zh-tw">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>BackEnd</title>
-<script type="text/javascript">
+<script type="text/javascript">	
 
-	
 </script>
 </head>
-<body>
-	<tr>
-		<td colspan="2" align="right">		
-					<c:url value="/BackendAction.do" var="page">
-						<c:param name="action" value="goodsSearch" />
-						<c:param name="pageNo" value="${pages.curPage}" />
-						</c:url>
-						
-		<c:forEach var="i" begin="1" end="${pages.totalPages}">
-			<h3 class="page"><a href="${page}" >${pages.curPage}</a></h3>
-			<h3 class="page"><a href="${page}" >${pages.curPage+1}</a></h3>
-		</c:forEach>
-		</td>
-		</tr>
-<table>
-	<%@ include file="BackendMenu.jsp"%>
+<%@ include file="BackendMenu.jsp"%>
+<body >
 	<br />
 	<br />
 	<HR>
-	<h2>商品列表</h2>
+	<h2 align="Center">商品列表</h2>
 	<br />
-	<div style="margin-left: 25px;">
 	<form action="BackendAction.do" method="get" style="width: 600px ;">
 	<input type="hidden" name="action" value="goodsSearch"/>
-	<div style="border: dashed; border-color:orange;">
 	<table>
+		<tbody>
 	<tr>
 	<td>商品編號</td>
 	<td>商品名稱(不區分大小寫)</td>
 	</tr>
 	<tr>
-	<td class="classTD"><input type="text" name="goodsID" id="goodsNo" value="" ></td>
-	<td class="classTD"><input type="text" name="goodsName" id="goodsName" value="" ></td>
+	<td class="classTD"><input type="text" name="goodsID" id="goodsNo" value="${pagesearchkey.goodsID}" ></td>
+	<td class="classTD"><input type="text" name="goodsName" id="goodsName" value="${pagesearchkey.goodsName}" ></td>
 </tr>
 <tr>
 	<td >商品最低價格</td>
@@ -59,8 +43,8 @@
 	<td >價格排序</td>
 </tr>
 <tr>
-	<td class="classTD"><input type="text" name="priceMin" id="priceMin" value="" ></td>
-	<td class="classTD"><input type="text" name="priceMax" id="priceMax" value="" ></td>
+	<td class="classTD"><input type="text" name="priceMin" id="priceMin" value="${pagesearchkey.priceMin}" ></td>
+	<td class="classTD"><input type="text" name="priceMax" id="priceMax" value="${pagesearchkey.priceMax}" ></td>
 	<td >
 	<select id="priceOrder" name="priceOrder">
 	<option value="2">無</option>
@@ -74,33 +58,26 @@
 	<td>商品狀態</td>
 </tr>
 <tr>
-	<td class="classTD"><input type="text" name="stockQuantity" id="stockQuantity" value="" ></td>
+	<td class="classTD"><input type="text" name="stockQuantity" id="stockQuantity" value="${pagesearchkey.stockQuantity}" ></td>
 	<td >
 	<select id="goodstatus" name="goodstatus">
-	<option value="">All</option>
+	<option value="${pagesearchkey.goodstatus }">All</option>
 	<option value="1">上架</option>
 	<option value="0">下架</option>
 	</select>
 	</td>
-	<td><input type="submit" value="查詢"></td>
+	<td><input type="submit" value="查詢"></td>	
 </tr>	
-	</table>
-	</div>
-	</form>
-	</div>
-	<br/>
-	<div style="margin-left: 25px;">
-		<table border="1">
-			<tbody>
+
+</tbody>
+<br/>		
 				<tr height="50" align="center">
 					<td width="100"><b>商品編號</b></td>
 					<td width="100"><b>商品名稱</b></td>
 					<td width="100"><b>商品價格</b></td>
 					<td width="100"><b>商品庫存</b></td>
 					<td width="100"><b>商品狀態</b></td>
-				</tr>
-				
-				
+				</tr>			
 				<c:forEach items="${goods}" var="goods">
 					<tr height="30" align="center">
 						<td>${goods.goodsID}</td>
@@ -108,18 +85,25 @@
 						<td>${goods.goodsPrice}</td>
 						<td>${goods.goodsQuantity}</td>
 						<td>${goods.status}</td>
-					</tr>
-					
+					</tr>					
 				</c:forEach>
-			</tbody>
-			<tr>			
-		</tr>
-		</table>
-		</div>
-	
-</table>
-		<%-- 
-<tr>
+	</table>
+	<table align="right" style="width: 600px ">
+	<tr align="right" style="width: 600px">
+		<td colspan="2" align="right" style="width: 500px">		
+					<c:url value="/BackendAction.do" var="page">
+						<c:param name="action" value="goodsSearch" />
+						<c:param name="pageNo" value="${pages.curPage}" />
+						</c:url>
+		<td class="page"><a href="${page}" >${pages.curPage}</a>	
+		<td class="page"><a href="${page}" >${pages.curPage+1}</a>
+		<td class="page"><a href="${page}" >下一頁</a>
+		</td>
+	</tr>	
+	</table>
+</form>
+		
+		<%-- <tr>
 		<td colspan="2" align="right">
 					<c:url value="/BackendAction.do" var="page">
 						<c:param name="action" value="goodsSearch" />
@@ -136,8 +120,7 @@
 					<h3 class="page"><a href="${page}" >${i }</a></h3>
 					</c:forEach>			
 				</td>
-</tr>
---%>
-	
+</tr>--%>
+
 </body>
 </html>
