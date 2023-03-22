@@ -1,11 +1,19 @@
 package com.training.vo;
 
+import java.util.List;
+
 public class Pagination {
 private int totalPages;
 private int pageSize;
 private int curPage;
 private String searchKeyword;
-
+private List<Integer> pageNo;
+public List<Integer> getPageNo() {
+	return pageNo;
+}
+public void setPageNo(List<Integer> pageNo) {
+	this.pageNo = pageNo;
+}
 public String getSearchKeyword() {
 	return searchKeyword;
 }

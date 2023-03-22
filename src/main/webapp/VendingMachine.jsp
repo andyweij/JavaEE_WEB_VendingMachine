@@ -195,20 +195,17 @@ $(document).ready(function(){
 	</table>
 	<nav  aria-label="Page navigation example" >
   			<ul  class="pagination" >
+  			<c:forEach  items="${pages.pageNo}" var="pageNo">
 					<c:url value="/FrontendAction.do" var="page">
 						<c:param name="action" value="searchGoods" />
 						<c:param name="searchKeyword" value="${pages.searchKeyword}"/>
-						<c:param name="pageNo" value="${pages.curPage}" />
-					</c:url>				
-					<c:if test="${pages.curPage>1}">
-					<li class="page-item"><a class="page-link" href="FrontendAction.do?action=searchGoods&searchKeyword=${pages.searchKeyword}&pageNo=${pages.curPage-1}" >上一頁</a></li>
-					<li class="page-item"><a class="page-link" href="FrontendAction.do?action=searchGoods&searchKeyword=${pages.searchKeyword}&pageNo=${pages.curPage-1}" >${pages.curPage-1}</a></li>
-					</c:if>
-					<li class="page-item"><a class="page-link" href="${page}">${pages.curPage} </a></li>
-					<c:if test="${pages.curPage<pages.totalPages}">
-					<li class="page-item"><a class="page-link" href="FrontendAction.do?action=searchGoods&searchKeyword=${pages.searchKeyword}&pageNo=${pages.curPage+1}" >${pages.curPage+1} </a></li>
-					<li class="page-item"><a class="page-link" href="FrontendAction.do?action=searchGoods&searchKeyword=${pages.searchKeyword}&pageNo=${pages.curPage+1}" >下一頁</a></li>
-					</c:if>					
+						<c:param name="pageNo" value="${pageNo}" />
+					</c:url>
+					<c:if test="${pages.curPage= pageNo}">
+					<li class="page-item"><a class="page-link" href="${page}">${pageNo}</a></li>
+			</c:if>
+			</c:forEach>
+				
 			</ul>
 </nav>
 </body>

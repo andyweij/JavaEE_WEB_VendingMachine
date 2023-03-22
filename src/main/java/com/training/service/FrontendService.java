@@ -2,6 +2,7 @@ package com.training.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -83,6 +84,28 @@ public class FrontendService {
 		}else if(null!=pages.getSearchKeyword()||""!=pages.getSearchKeyword()){
 			pages.setTotalPages(new BigDecimal(frontenddao.pageSerach(pages.getSearchKeyword(),"").size()).divide(new BigDecimal(pages.getPageSize()), 0, RoundingMode.UP).intValue());//總頁數
 		}	
+		List<Integer> pageno=new ArrayList<>();
+		if(pages.getTotalPages()<3){
+			for(int i=1;i<=pages.getTotalPages();i++){
+				pageno.add(i);
+			}
+		}else{
+			if(pages.getCurPage()==1){
+				for(int i=1;i<=3;i++){
+					pageno.add(i);	
+				}
+			}else if(pages.getCurPage()==pages.getTotalPages()){
+				for(int i=pages.getTotalPages()-2;i<=pages.getTotalPages();i++){
+					pageno.add(i);	
+				}
+			}else{
+				for(int i=pages.getCurPage()-1;i<=pages.getCurPage()+1;i++){
+					pageno.add(i);	
+				}
+			}
+		}
+		pages.setPageNo(pageno);
+		
 		return pages;
 	}
 	

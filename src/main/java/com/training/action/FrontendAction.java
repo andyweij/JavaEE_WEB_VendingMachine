@@ -74,9 +74,9 @@ public class FrontendAction extends DispatchAction{
 		Pagination pages =frontendservice.pagInation(goodsorderform.getPageNo(),goodsorderform.getSearchKeyword()); //計算商品頁數
 		req.setAttribute("pages", pages);
 		List<Goods> goodsList=new ArrayList<>();
-		goodsList=frontendservice.pageSearch(pages.getSearchKeyword(),String.valueOf(pages.getCurPage()));
+		goodsList=frontendservice.pageSearch(pages.getSearchKeyword(),String.valueOf(pages.getCurPage()));//查詢函關鍵字LIST
 		req.setAttribute("goodsList", goodsList);
-		
+
 		return mapping.findForward("vendingMachine");
 	}
 //	
