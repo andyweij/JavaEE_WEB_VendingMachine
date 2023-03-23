@@ -37,8 +37,8 @@ public class BackendAction extends DispatchAction{
             HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		List<Goods> goods = backendservice.queryGoods();
 		String pageNo=req.getParameter("pageNo");
-		Pagination pages=backendservice.pagInation(pageNo);
-		req.setAttribute("pages", pages);
+//		Pagination pages=backendservice.pagInation(pageNo);
+//		req.setAttribute("pages", pages);
 //		int goodpages=(int)Math.ceil(goods.size()/5);
 		req.setAttribute("goods", goods);
 		goods.stream().forEach(a -> System.out.println(a.toString()));

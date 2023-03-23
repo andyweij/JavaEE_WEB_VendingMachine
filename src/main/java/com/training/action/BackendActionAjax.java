@@ -35,16 +35,19 @@ public class BackendActionAjax extends DispatchAction{
 private BackendService backendservice = BackendService.getInstance();
 	
 	public ActionForward queryGoods(ActionMapping mapping, ActionForm form, 
-            HttpServletRequest req, HttpServletResponse resp) throws IOException {
-//		List<Goods> goods = backendservice.queryGoods();
+            HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		HttpSession session = req.getSession();	
+		session.removeAttribute("goods");
+		BackActionForm backactionform=(BackActionForm)form;
 		PageSearchKey pagesearchkey=new PageSearchKey();
-		pagesearchkey.setPageNo(req.getParameter("pageNo"));
+		BeanUtils.copyProperties(pagesearchkey, backactionform);
+//		pagesearchkey.setPageNo(req.getParameter("pageNo"));
 		List<Goods> goods = backendservice.queryGoodsBykey(pagesearchkey);
-		String pageNo=req.getParameter("pageNo");
-		Pagination pages=backendservice.pagInation(pageNo);
+//		String pageNo=req.getParameter("pageNo");
+		Pagination pages=backendservice.pagInation(pagesearchkey,goods);
+		req.setAttribute("pagesearchkey", pagesearchkey);
 		req.setAttribute("pages", pages);
-//		int goodpages=(int)Math.ceil(goods.size()/5);
-		req.setAttribute("goods", goods);
+		req.setAttribute("goods", pages.getGoodsList());
 		goods.stream().forEach(a -> System.out.println(a.toString()));
 		// Redirect to view
 		return mapping.findForward("backendGoodsList");

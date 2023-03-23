@@ -26,7 +26,7 @@
 	<h2 align="Center">商品列表</h2>
 	<br />
 	<form action="BackendAction.do" method="get" style="width: 600px ;">
-	<input type="hidden" name="action" value="goodsSearch"/>
+	<input type="hidden" name="action" value="queryGoods"/>
 	<table>
 		<tbody>
 	<tr>
@@ -92,35 +92,26 @@
 	<tr align="right" style="width: 600px">
 		<td colspan="2" align="right" style="width: 500px">		
 					<c:url value="/BackendAction.do" var="page">
-						<c:param name="action" value="goodsSearch" />
-						<c:param name="pageNo" value="${pages.curPage}" />
+						<c:param name="action" value="queryGoods" />
+						<c:param name="goodsNo" value="${pagesearchkey.goodsID}" />
+						<c:param name="goodsName" value="${pagesearchkey.goodsName}" />
+						<c:param name="priceMin" value="${pagesearchkey.priceMin}" />
+						<c:param name="priceMax" value="${pagesearchkey.priceMax}" />
+						<c:param name="priceOrder" value="${pagesearchkey.priceOrder}" />
+						<c:param name="goodstatus" value="${pagesearchkey.goodstatus}" />
+						<c:param name="pageNo" value="" />
 						</c:url>
-		<td class="page"><a href="${page}" >${pages.curPage}</a>	
-		<td class="page"><a href="${page}" >${pages.curPage+1}</a>
-		<td class="page"><a href="${page}" >下一頁</a>
-		</td>
+		<c:if test="${pages.curPage>1}">
+					<td class="page-item"><a class="page-link" href="${page}${pages.curPage-1}">上一頁</a></td>
+					</c:if>
+					<c:forEach  items="${pages.pageNo}" var="pageNo">
+					<td class="page-item"><a class="page-link" href="${page}${pageNo}">${pageNo}</a></td>
+					</c:forEach>
+					<c:if test="${pages.curPage<pages.totalPages}">
+				<td class="page-item"><a class="page-link" href="${page}${pages.curPage+1}">下一頁</a></td>
+			</c:if>
 	</tr>	
 	</table>
 </form>
-		
-		<%-- <tr>
-		<td colspan="2" align="right">
-					<c:url value="/BackendAction.do" var="page">
-						<c:param name="action" value="goodsSearch" />
-						<c:param name="goodsID" value="${goods.goodsID}"/>
-						<c:param name="goodsName" value="${goods.goodsName}"/>
-						<c:param name="priceMax" value="${goods.priceMax}"/>
-						<c:param name="priceMin" value="${goods.priceMin}"/>
-						<c:param name="priceOrder" value="${goods.priceOrder}"/>
-						<c:param name="stockQuantity" value="${goods.stockQuantity}"/>
-						<c:param name="goodstatus" value="${goods.goodstatus}"/>
-						<c:param name="pageNo" value="${pages.curPage}" />
-					</c:url>				
-					<c:forEach var="i" begin="1" end="5"> 
-					<h3 class="page"><a href="${page}" >${i }</a></h3>
-					</c:forEach>			
-				</td>
-</tr>--%>
-
 </body>
 </html>

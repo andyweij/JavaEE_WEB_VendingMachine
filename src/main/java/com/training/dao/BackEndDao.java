@@ -188,23 +188,23 @@ public class BackEndDao {
 		
 		List<Goods> goods = new ArrayList<>();
 		PageSearchKey searchkey=pagesearchkey;
-		String querySQL = "SELECT * FROM ( SELECT ROWNUM ROW_NUM,BG.* FROM beverage_goods BG WHERE  goods_id like ? and  lower(goods_name) like lower(?) ";
+		String querySQL = " SELECT ROWNUM ROW_NUM,BG.* FROM beverage_goods BG WHERE  goods_id like ? and  lower(goods_name) like lower(?) ";
 		String goodsId;
 		String goodsName;
 		String pricemin;
 		String pricemax;
 		String status;
 		String order;
-		String pageNo;
+//		String pageNo;
 		String quantity;
 		
-		if(null==searchkey.getPageNo()||searchkey.getPageNo().isEmpty()){
-			pageNo="1";
-		}else{
-			pageNo=searchkey.getPageNo();
-		}
-		int endRowNo=Integer.parseInt(pageNo)*6;
-		int startRowNo=endRowNo-5;
+//		if(null==searchkey.getPageNo()||searchkey.getPageNo().isEmpty()){
+//			pageNo="1";
+//		}else{
+//			pageNo=searchkey.getPageNo();
+//		}
+//		int endRowNo=Integer.parseInt(pageNo)*6;
+//		int startRowNo=endRowNo-5;
 		if(null==searchkey.getGoodsID()||"".equals(searchkey.getGoodsID())){
 			goodsId="%%";
 		}else{
@@ -255,7 +255,7 @@ public class BackEndDao {
 			querySQL+=order;
 		}
 		
-		querySQL+=") WHERE ROW_NUM >= ? AND ROW_NUM <= ? "; 
+//		querySQL+=") WHERE ROW_NUM >= ? AND ROW_NUM <= ? "; 
 		// Step1:取得Connection
 		try (Connection conn = DBConnectionFactory.getOracleDBConnection();
 				// Step2:Create prepareStatement For SQL
@@ -263,8 +263,8 @@ public class BackEndDao {
 			int count=1;
 			stmt.setString(count++,goodsId);
 			stmt.setString(count++,goodsName);
-			stmt.setInt(count++, startRowNo);
-			stmt.setInt(count++, endRowNo);
+//			stmt.setInt(count++, startRowNo);
+//			stmt.setInt(count++, endRowNo);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				Goods good=new Goods();

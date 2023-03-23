@@ -2,12 +2,21 @@ package com.training.vo;
 
 import java.util.List;
 
+import com.training.model.Goods;
+
 public class Pagination {
 private int totalPages;
 private int pageSize;
 private int curPage;
 private String searchKeyword;
 private List<Integer> pageNo;
+private List<Goods> goodsList;
+public List<Goods> getGoodsList() {
+	return goodsList;
+}
+public void setGoodsList(List<Goods> goodsList) {
+	this.goodsList = goodsList;
+}
 public List<Integer> getPageNo() {
 	return pageNo;
 }
