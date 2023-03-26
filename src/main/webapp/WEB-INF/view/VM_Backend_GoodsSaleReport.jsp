@@ -2,18 +2,24 @@
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<c:url value="/" var="WEB_PATH"/>
+<c:url value="/js" var="JS_PATH"/>
+<c:url value="/css" var="CSS_PATH"/> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="${CSS_PATH}/bootstrap.min.css">
+<script src="${JS_PATH}/jquery-3.2.1.min.js"></script>
+<script src="${JS_PATH}/popper.min.js"></script>
+<script src="${JS_PATH}/bootstrap.min.js"></script>  
 <title>BackEnd</title>
 <script type="text/javascript"></script>
 </head>
 <body>
 	<%@ include file="BackendMenu.jsp"%>
-	<br /><br /><HR>
-	<h2>銷售報表</h2>
-	<br />
+	<h2 align="center">銷售報表</h2>
+	<HR>
 	<div style="margin-left: 25px;">
 		<form action="BackendAction.do" method="get">
 		<input type="hidden" name="action" value="querySalesReport"/>

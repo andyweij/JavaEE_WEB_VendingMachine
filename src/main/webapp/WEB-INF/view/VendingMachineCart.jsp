@@ -92,7 +92,7 @@ $(document).ready(function(){
 				</form>
 		</div>
 			<div class="row">
-				<div class="col">
+				<div class="col" align="center">
 					<form action="FrontendAction.do" method="post">
 					<input type="hidden" name="action" value="buyGoods" />
 					<div class="card" style="width: 18rem;">

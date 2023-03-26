@@ -4,9 +4,14 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:url value="/" var="WEB_PATH"/>
 <c:url value="/js" var="JS_PATH"/>
+<c:url value="/css" var="CSS_PATH"/>  
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="${CSS_PATH}/bootstrap.min.css">
+<script src="${JS_PATH}/jquery-3.2.1.min.js"></script>
+<script src="${JS_PATH}/popper.min.js"></script>
+<script src="${JS_PATH}/bootstrap.min.js"></script>    
 <meta http-equiv="Content-Language" content="zh-tw">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>BackEndAjax</title>
@@ -50,8 +55,8 @@
 </head>
 <body>
 	<%@ include file="BackendMenu.jsp"%>
-	<h2>商品維護作業</h2>
-	<br />
+	<h2 align="Center">商品維護作業</h2>
+		<HR>
 	<div style="margin-left: 25px;">
 		<p style="color: blue;">${sessionScope.updateMsg}</p>
 		<% session.removeAttribute("updateMsg"); %>

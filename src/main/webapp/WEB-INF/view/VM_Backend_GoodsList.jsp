@@ -20,13 +20,12 @@
 </head>
 <%@ include file="BackendMenu.jsp"%>
 <body >
-	<br />
-	<br />
-	<HR>
+<div  class="container-fluid">
 	<h2 align="Center">商品列表</h2>
-	<br />
+		<HR>
 	<form action="BackendAction.do" method="get" style="width: 600px ;">
 	<input type="hidden" name="action" value="queryGoods"/>
+
 	<table>
 		<tbody>
 	<tr>
@@ -68,9 +67,8 @@
 	</td>
 	<td><input type="submit" value="查詢"></td>	
 </tr>	
-
 </tbody>
-<br/>		
+
 				<tr height="50" align="center">
 					<td width="100"><b>商品編號</b></td>
 					<td width="100"><b>商品名稱</b></td>
@@ -113,5 +111,6 @@
 	</tr>	
 	</table>
 </form>
+</div>
 </body>
 </html>
