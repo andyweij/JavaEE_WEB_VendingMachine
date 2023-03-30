@@ -11,6 +11,7 @@ private int curPage;
 private String searchKeyword;
 private List<Integer> pageNo;
 private List<Goods> goodsList;
+
 public List<Goods> getGoodsList() {
 	return goodsList;
 }

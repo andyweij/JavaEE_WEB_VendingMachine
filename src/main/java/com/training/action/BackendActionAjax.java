@@ -41,14 +41,12 @@ private BackendService backendservice = BackendService.getInstance();
 		BackActionForm backactionform=(BackActionForm)form;
 		PageSearchKey pagesearchkey=new PageSearchKey();
 		BeanUtils.copyProperties(pagesearchkey, backactionform);
-//		pagesearchkey.setPageNo(req.getParameter("pageNo"));
-		List<Goods> goods = backendservice.queryGoodsBykey(pagesearchkey);
-//		String pageNo=req.getParameter("pageNo");
-		Pagination pages=backendservice.pagInation(pagesearchkey,goods);
+		Pagination pages=backendservice.pagInation(pagesearchkey);
+
 		req.setAttribute("pagesearchkey", pagesearchkey);
 		req.setAttribute("pages", pages);
 		req.setAttribute("goods", pages.getGoodsList());
-		goods.stream().forEach(a -> System.out.println(a.toString()));
+//		goods.stream().forEach(a -> System.out.println(a.toString()));
 		// Redirect to view
 		return mapping.findForward("backendGoodsList");
 	}

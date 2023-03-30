@@ -188,23 +188,116 @@ public class BackEndDao {
 		
 		List<Goods> goods = new ArrayList<>();
 		PageSearchKey searchkey=pagesearchkey;
-		String querySQL = " SELECT ROWNUM ROW_NUM,BG.* FROM beverage_goods BG WHERE  goods_id like ? and  lower(goods_name) like lower(?) ";
+		String querySQL =" SELECT ROWNUM ROW_NUM , BG.* FROM beverage_goods BG WHERE  goods_id like ? and  lower(goods_name) like lower(?) "; 
 		String goodsId;
 		String goodsName;
 		String pricemin;
 		String pricemax;
 		String status;
 		String order;
-//		String pageNo;
 		String quantity;
 		
-//		if(null==searchkey.getPageNo()||searchkey.getPageNo().isEmpty()){
-//			pageNo="1";
-//		}else{
-//			pageNo=searchkey.getPageNo();
-//		}
-//		int endRowNo=Integer.parseInt(pageNo)*6;
-//		int startRowNo=endRowNo-5;
+		if(null==searchkey.getGoodsID()||"".equals(searchkey.getGoodsID())){
+			goodsId="%%";
+		}else{
+			goodsId="%"+searchkey.getGoodsID()+"%";
+			
+		}	
+		if(null==searchkey.getGoodsName()||"".equals(searchkey.getGoodsName())){
+			goodsName="%%";
+		}else{
+			goodsName="%"+searchkey.getGoodsName()+"%";
+			
+		}
+		
+		if(null==searchkey.getGoodstatus()){
+			
+		}
+		else if(!searchkey.getGoodstatus().isEmpty()){
+			status=" and status = "+searchkey.getGoodstatus();
+			querySQL+=status;
+		}
+			
+		if(null==searchkey.getStockQuantity()){
+			
+		}else if(!searchkey.getStockQuantity().isEmpty()){
+			quantity=" and QUANTITY < "+searchkey.getStockQuantity();
+			querySQL+=quantity;
+		}
+		
+		if(null==searchkey.getPriceMax()&&null==searchkey.getPriceMin()){
+		}else if(!searchkey.getPriceMin().isEmpty()&&!searchkey.getPriceMax().isEmpty()){
+			String pricerange=" and price between "+searchkey.getPriceMin()+" and "+searchkey.getPriceMax() ;
+			querySQL+=pricerange;
+		}else{
+			if(null==searchkey.getPriceMin()||!searchkey.getPriceMin().isEmpty()){
+				pricemin=" and price < "+searchkey.getPriceMin();
+				querySQL+=pricemin;			
+			}else if(null==searchkey.getPriceMax()||!searchkey.getPriceMax().isEmpty()){
+				pricemax=" and price > "+searchkey.getPriceMax();
+				querySQL+=pricemax;
+			}
+		}
+		if(null==searchkey.getPriceOrder()){
+		}else if(searchkey.getPriceOrder().equals("0")){
+			order=" order by price desc ";
+			querySQL+=order;
+		}else if(searchkey.getPriceOrder().equals("1")){
+			order=" order by price ";
+			querySQL+=order;
+		}
+		// Step1:取得Connection
+		try (Connection conn = DBConnectionFactory.getOracleDBConnection();
+				// Step2:Create prepareStatement For SQL
+				PreparedStatement stmt = conn.prepareStatement(querySQL);){
+			int count=1;
+			stmt.setString(count++,goodsId);
+			stmt.setString(count++,goodsName);
+//			stmt.setInt(count++, startRowNo);
+//			stmt.setInt(count++, endRowNo);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Goods good=new Goods();
+				good.setGoodsID(rs.getString("GOODS_ID"));
+				good.setGoodsName(rs.getString("GOODS_NAME"));
+				good.setGoodsImageName(rs.getNString("image_name"));
+				good.setDESCRIPTION(rs.getNString("description"));
+				good.setGoodsPrice(rs.getInt("price"));
+				good.setGoodsQuantity(rs.getInt("quantity"));
+				good.setStatus(rs.getNString("status"));
+				goods.add(good);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return goods;
+	}
+public List<Goods> paginationBykey(PageSearchKey pagesearchkey) {
+		
+		List<Goods> goods = new ArrayList<>();
+		PageSearchKey searchkey=pagesearchkey;
+		String querySQL ; 
+		String goodsId;
+		String goodsName;
+		String pricemin;
+		String pricemax;
+		String status;
+		String order;
+		String pageNo;
+		String quantity;
+		
+		if(null==searchkey.getPageNo()||searchkey.getPageNo().isEmpty()){
+			querySQL=" SELECT * FROM ( SELECT ROWNUM ROW_NUM , BG.* FROM beverage_goods BG WHERE  goods_id like ? and  lower(goods_name) like lower(?) ";
+			pageNo="1";
+		}else{
+			querySQL=" SELECT * FROM ( SELECT ROWNUM ROW_NUM , BG.* FROM beverage_goods BG WHERE  goods_id like ? and  lower(goods_name) like lower(?) ";
+			pageNo=searchkey.getPageNo();
+		}
+			
+		
+		int endRowNo=Integer.parseInt(pageNo)*6;
+		int startRowNo=endRowNo-5;
 		if(null==searchkey.getGoodsID()||"".equals(searchkey.getGoodsID())){
 			goodsId="%%";
 		}else{
@@ -255,7 +348,8 @@ public class BackEndDao {
 			querySQL+=order;
 		}
 		
-//		querySQL+=") WHERE ROW_NUM >= ? AND ROW_NUM <= ? "; 
+		querySQL+=" ) WHERE ROW_NUM >= " +startRowNo+" AND ROW_NUM <= "+endRowNo;
+		
 		// Step1:取得Connection
 		try (Connection conn = DBConnectionFactory.getOracleDBConnection();
 				// Step2:Create prepareStatement For SQL

@@ -1,7 +1,5 @@
 package com.training.service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -53,46 +51,37 @@ public class BackendService {
 		return backenddao.queryGoodsBykey(pagesearchkey);
 	}
 	
-	public Pagination pagInation(PageSearchKey page,List<Goods> goodsList) {
-		Pagination pages = new Pagination();
-		pages.setPageSize(6);//每頁顯示筆數
+	public Pagination pagInation(PageSearchKey page) {
+		Pagination pagination = new Pagination();
+		pagination.setPageSize(6);//每頁顯示筆數
+		pagination.setTotalPages((int)Math.ceil((double)backenddao.queryGoodsBykey(page).size()/pagination.getPageSize()));//總頁數
 		if(null==page.getPageNo()||page.getPageNo()==""){
-			pages.setCurPage(1);
+			pagination.setCurPage(1);
 		}else{
-		pages.setCurPage(Integer.parseInt(page.getPageNo()));
+			pagination.setCurPage(Integer.parseInt(page.getPageNo()));
 		}
-		int endRowNo=pages.getCurPage()*6;
-		int startRowNo=endRowNo-6;
-		List<Goods> goods=new ArrayList<>();
-		if(goodsList.size()>endRowNo){
-		goods=goodsList.subList(startRowNo, endRowNo);
-		}else{
-		goods=goodsList.subList(startRowNo,goodsList.size());
-		}
-		pages.setGoodsList(goods);
-//		pages.setTotalPages(new BigDecimal(backenddao.queryGoods().size()).divide(new BigDecimal(pages.getPageSize()), 0, RoundingMode.UP).intValue());//總頁數
-		pages.setTotalPages((int)Math.ceil((double)backenddao.queryGoodsBykey(page).size()/pages.getPageSize()));//總頁數
-		List<Integer> pageno=new ArrayList<>();
-		if(pages.getTotalPages()<3){
-			for(int i=1;i<=pages.getTotalPages();i++){
-				pageno.add(i);
+		pagination.setGoodsList(backenddao.paginationBykey(page));
+		List<Integer> pageNoList=new ArrayList<>();
+		if(pagination.getTotalPages()<3){
+			for(int i=1;i<=pagination.getTotalPages();i++){
+				pageNoList.add(i);
 			}
 		}else{
-			if(pages.getCurPage()==1){
+			if(pagination.getCurPage()==1){
 				for(int i=1;i<=3;i++){
-					pageno.add(i);	
+					pageNoList.add(i);	
 				}
-			}else if(pages.getCurPage()==pages.getTotalPages()){
-				for(int i=pages.getTotalPages()-2;i<=pages.getTotalPages();i++){
-					pageno.add(i);	
+			}else if(pagination.getCurPage()==pagination.getTotalPages()){
+				for(int i=pagination.getTotalPages()-2;i<=pagination.getTotalPages();i++){
+					pageNoList.add(i);	
 				}
 			}else{
-				for(int i=pages.getCurPage()-1;i<=pages.getCurPage()+1;i++){
-					pageno.add(i);	
+				for(int i=pagination.getCurPage()-1;i<=pagination.getCurPage()+1;i++){
+					pageNoList.add(i);	
 				}
 			}
 		}
-		pages.setPageNo(pageno);
-		return pages;
+		pagination.setPageNo(pageNoList);
+		return pagination;
 	}
 }
