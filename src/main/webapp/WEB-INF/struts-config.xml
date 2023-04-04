@@ -41,7 +41,7 @@
 <!--FrontendAction.do?action=searchGoods-->     
   
         <action path="/MemberAction" type="com.training.action.MemberAction" parameter="action" name="goodsorderform">
-        <forward name="vendingMachine" path="/WEB-INF/view/VendingMachineCart.jsp"/>
+        <forward name="goodsCart" path="/WEB-INF/view/GoodsCart.jsp"/>
         </action>
     </action-mappings>
 </struts-config>

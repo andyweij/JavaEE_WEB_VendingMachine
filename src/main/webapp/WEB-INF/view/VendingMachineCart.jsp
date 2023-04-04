@@ -25,7 +25,7 @@ $(document).ready(function(){
 		$('#showmsg').toggle("slow");
 	})
 });
-		function addCartGoods(goodsID, buyQuantityIdx){					
+	 function addCartGoods(goodsID, buyQuantityIdx){					
 			var buyQuantity = document.getElementsByName("buyQuantity")[buyQuantityIdx].value;
 			if(buyQuantity!=0){
 			console.log("goodsID:", goodsID);
@@ -84,6 +84,8 @@ $(document).ready(function(){
 	<br/>	
 	<button onclick="queryCartGoods()">購物車商品列表</button>
 	<button onclick="clearCartGoods()">清空購物車</button>
+	<a href="MemberAction.do?action=CartGoods" class="card-link">購物車</a>
+	
 	<br/><br/>
 				<form action="FrontendAction.do" method="get">
 					<input type="hidden" name="action" value="searchGoods" /> 
@@ -118,7 +120,7 @@ $(document).ready(function(){
 		    			<a href="LoginAction.do?action=logout" class="card-link">登出</a>
 		 				 </div>			
 					  </div>
-					  </form>
+					  </form> 
 					<div class="card border-dark mb-3" style="max-width: 18rem;">
 					  <div class="card-header" align="center" >~~~~~~~ 消費明細 ~~~~~~~</div>
 					  <div class="card-body text-dark">

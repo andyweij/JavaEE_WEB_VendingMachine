@@ -77,7 +77,7 @@ public class MemberAction extends DispatchAction {
 			shoppingCartGoods.stream().forEach(g->g.setGoodsPrice(memberservice.queryByGoodsId(g.getGoodsID()).getGoodsPrice()));
 			cartGoodsInfo.setShoppingCartGoods(shoppingCartGoods.stream().collect(Collectors.toSet()));
 			cartGoodsInfo.setTotalAmount(shoppingCartGoods.stream().mapToInt(s->s.getGoodsPrice()*s.getBuyQuantity()).sum());
-			
+
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("application/json");
 			PrintWriter out = response.getWriter();	
@@ -86,8 +86,13 @@ public class MemberAction extends DispatchAction {
 			out.close();
 			session.setAttribute("cartGoodsInfo",cartGoodsInfo);	
 		}
+		
+		return null;
+	}
+	public ActionForward CartGoods(ActionMapping mapping, ActionForm form, HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
 
-		return mapping.findForward("vendingMachine");
+		return mapping.findForward("goodsCart");
 	}
 
 	public ActionForward clearCartGoods(ActionMapping mapping, ActionForm form, HttpServletRequest req,
