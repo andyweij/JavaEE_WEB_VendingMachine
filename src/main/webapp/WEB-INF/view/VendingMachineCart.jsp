@@ -126,7 +126,7 @@ $(document).ready(function(){
 					  <div class="card-body text-dark">
 					    <p class="card-text">投入金額：${buyRtn.payprice}</p>
 					    <p class="card-text">找零金額：${buyRtn.returnprice}</p>
-					    <p class="card-text">投入金額：${buyRtn.payprice}</p>
+					    <p class="card-text">購買金額：${buyRtn.totalsprice}</p>
 					    <p class="card-text" align="center">物品明細:</p>
 					    <c:forEach items="${buyRtn.shoppingCartGoods}" var="goodsinfo" >
 					    	<p>商品名稱:${goodsinfo.goodsName}</p>

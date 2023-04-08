@@ -16,7 +16,7 @@
 <title>Cart</title>
 </head>
 <body>
-<a style="font-size: larger;" href="FrontendAction.do?action=searchGoods" class="badge badge-danger">商品業面</a>
+<a style="font-size: larger;" href="FrontendAction.do?action=searchGoods" class="badge badge-danger">商品頁</a>
 	<div class="container">
 	
 <table class="table table-striped">
@@ -29,9 +29,9 @@
     </tr>
   </thead>
   <tbody>
-  <c:forEach items="${shoppingCartGoods}" var="goodsList" begin="0" end="${shoppingCartGoods.size()}" >
+  <c:forEach items="${shoppingCartGoods}" var="goodsList" begin="0" end="${shoppingCartGoods.size()}"  >
     <tr>
-      <th scope="row">1</th>
+      <th scope="row">${shoppingCartGoods.indexOf(goodsList)+1}</th>
       <td>${goodsList.goodsName }</td>
       <td>${goodsList.goodsPrice}</td>
       <td>${goodsList.buyQuantity}</td>
