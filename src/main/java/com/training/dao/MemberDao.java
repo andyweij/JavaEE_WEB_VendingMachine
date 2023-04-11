@@ -66,4 +66,27 @@ public class MemberDao {
 		}
 		return member;
 	}
+	public boolean registerAccount(Member newmember) {
+		
+		boolean createSuccess = false;
+		String querysql = "INSERT INTO beverage_member ( identification_no , password , customer_name ) VALUES ( ? , ? , ? ) ";
+		try (Connection conn = DBConnectionFactory.getOracleDBConnection()) {
+			conn.setAutoCommit(false);
+			try(PreparedStatement pstmt = conn.prepareStatement(querysql)){
+			pstmt.setString(1, newmember.getIdentificationNo());
+			pstmt.setString(2, newmember.getPassword());
+			pstmt.setString(3, newmember.getCustomerName());		
+			int recordCount = pstmt.executeUpdate();
+			createSuccess = (recordCount > 0) ? true : false;
+			// Step5:Transaction commit(交易提交)
+			conn.commit();
+			}catch(SQLException e) {
+				conn.rollback();
+			}
+		} catch (SQLException e) {
+			createSuccess=false;
+			e.printStackTrace();	
+		}
+		return createSuccess;
+	}
 }

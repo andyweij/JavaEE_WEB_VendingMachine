@@ -76,4 +76,28 @@ public class LoginAction extends DispatchAction {
     	
     	return mapping.findForward("fail");
     }
+    public ActionForward regis(ActionMapping mapping, ActionForm form, 
+            HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    	ActionForward actFwd = null;
+    	String inputID = req.getParameter("newid");
+        String inputPwd = req.getParameter("newpwd");
+        String inputuserName=req.getParameter("newname");
+        String loginMsg = null;
+        Member member= memberDao.ByIdentificationNo(inputID);
+        if(member!=null) {
+        	loginMsg="帳戶已存在";
+        	actFwd = mapping.findForward("crtfail"); 
+        }else {
+        	member=new Member();
+        	member.setIdentificationNo(inputID);
+        	member.setPassword(inputPwd);
+        	member.setCustomerName(inputuserName);
+        	boolean registerresult=memberDao.registerAccount(member);
+        	loginMsg=registerresult ? "帳戶註冊成功" : "帳戶註冊失敗";
+        	actFwd = mapping.findForward("crtsuccess");
+        }
+        
+    	req.setAttribute("loginMsg", loginMsg);
+    	return actFwd;
+    }
 }

@@ -16,6 +16,7 @@
 <title>Cart</title>
 </head>
 <body>
+<div class="container">
 <a style="font-size: larger;" href="FrontendAction.do?action=searchGoods" class="badge badge-danger">商品頁</a>
 	<div class="container">
 	
@@ -37,11 +38,35 @@
       <td>${goodsList.buyQuantity}</td>
     </tr>
     </c:forEach>
+    <td>合計: ${cartGoodsInfo.totalAmount }</td>
   </tbody>
+  
 </table>
+<form action="FrontendAction.do" method="post">
+					<input type="hidden" name="action" value="buyGoods" />
+					<div class="card" style="width: 18rem;">
+					  
+					  <div class="card-body">		  
 
+									<div class="input-group-prepend">
+										<span class="input-group-text">投入 $</span>
+									</div>
+									<input type="text" class="form-control" name="inputMoney" max="100000" min="0"
+										aria-label="Amount (to the nearest dollar)">
+									<div class="input-group-append">
+										<span class="input-group-text">元</span>
+									</div>
+
+									</div>
+									<div class="card-body"  >
+					   	<input class="btn btn-secondary" type="submit" value="送出">&emsp;
+		    			<a href="BackendAction.do?action=queryGoods" class="card-link">後臺頁面</a>
+		    			<a href="LoginAction.do?action=logout" class="card-link">登出</a>
+		 				 </div>			
+									</div>
+									</form>
 	</div>
 
-
+</div>
 </body>
 </html>

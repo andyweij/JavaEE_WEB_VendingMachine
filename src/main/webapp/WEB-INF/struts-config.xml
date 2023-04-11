@@ -36,6 +36,8 @@
          <action path="/LoginAction" type="com.training.action.LoginAction" parameter="action">
             <forward name="success" path="FrontendAction.do?action=searchGoods" redirect="true"/>
             <forward name="fail" path="/VendingMachineLogin.jsp" />
+            <forward name="crtsuccess" path="/VendingMachineLogin.jsp" />
+            <forward name="crtfail" path="/VendingMachineregister.jsp" />
         </action> 
 <!--BackendAction.do?action=queryGoods-->
 <!--FrontendAction.do?action=searchGoods-->     

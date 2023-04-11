@@ -101,21 +101,10 @@ $(document).ready(function(){
 					  <img class="card-img-top" src="DrinksImage/coffee.jpg" alt="Card image cap">
 					  <div class="card-body">		  
 					    <h5 class="card-title" align="center">歡迎光臨，${member.customerName}!</h5>
-								<div class="input-group mb-3">
-									<div class="input-group-prepend">
-										<span class="input-group-text">投入 $</span>
-									</div>
-									<input type="text" class="form-control" name="inputMoney" max="100000" min="0"
-										aria-label="Amount (to the nearest dollar)">
-									<div class="input-group-append">
-										<span class="input-group-text">元</span>
-									</div>
-								</div>
 								<h3>${frontMsg}</h3>
 								<% session.removeAttribute("frontMsg"); %>
 							</div>			
 					   <div class="card-body"  >
-					   	<input class="btn btn-secondary" type="submit" value="送出">&emsp;
 		    			<a href="BackendAction.do?action=queryGoods" class="card-link">後臺頁面</a>
 		    			<a href="LoginAction.do?action=logout" class="card-link">登出</a>
 		 				 </div>			
