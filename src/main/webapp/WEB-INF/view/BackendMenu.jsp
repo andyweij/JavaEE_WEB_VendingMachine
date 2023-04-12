@@ -17,7 +17,7 @@
 	<a href="LoginAction.do?action=logout" class="badge badge-secondary">(登出)</a>
 	</br>
 	</p>
-	<a style="font-size: larger;" href="FrontendAction.do?action=searchGoods" class="badge badge-danger">商品業面</a>
+	<a style="font-size: larger;" href="FrontendAction.do?action=searchGoods" class="badge badge-danger">商品頁面</a>
 
 <br/>
 </div>

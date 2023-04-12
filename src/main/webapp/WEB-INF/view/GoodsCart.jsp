@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:url value="/" var="WEB_PATH"/>
 <c:url value="/js" var="JS_PATH"/>
@@ -17,9 +17,11 @@
 </head>
 <body>
 <div class="container">
+<div class="row">
+<div class="col">
 <a style="font-size: larger;" href="FrontendAction.do?action=searchGoods" class="badge badge-danger">商品頁</a>
-	<div class="container">
-	
+</div>	
+<div class="col-10">	
 <table class="table table-striped">
   <thead>
     <tr>
@@ -30,6 +32,7 @@
     </tr>
   </thead>
   <tbody>
+ 
   <c:forEach items="${shoppingCartGoods}" var="goodsList" begin="0" end="${shoppingCartGoods.size()}"  >
     <tr>
       <th scope="row">${shoppingCartGoods.indexOf(goodsList)+1}</th>
@@ -40,14 +43,16 @@
     </c:forEach>
     <td>合計: ${cartGoodsInfo.totalAmount }</td>
   </tbody>
-  
+
 </table>
+</div>
+</div>
+<div class="row">
+<div class="col-md-4 offset-md-4 mb-3">
 <form action="FrontendAction.do" method="post">
 					<input type="hidden" name="action" value="buyGoods" />
-					<div class="card" style="width: 18rem;">
-					  
+					<div class="card" style="width: 18rem;">					  
 					  <div class="card-body">		  
-
 									<div class="input-group-prepend">
 										<span class="input-group-text">投入 $</span>
 									</div>
@@ -56,7 +61,6 @@
 									<div class="input-group-append">
 										<span class="input-group-text">元</span>
 									</div>
-
 									</div>
 									<div class="card-body"  >
 					   	<input class="btn btn-secondary" type="submit" value="送出">&emsp;
@@ -66,7 +70,7 @@
 									</div>
 									</form>
 	</div>
-
-</div>
+	</div>
+	</div>
 </body>
 </html>

@@ -32,12 +32,12 @@ public class LoginCheckFilter implements Filter {
             // 如果不存在就必須先判斷目前是否為登入的請求,是的話則進行後續帳密驗證比對 LoginAction
         	String requestURI = httpRequest.getRequestURI();
         	String action = request.getParameter("action");
-            if(requestURI.endsWith("LoginAction.do") && "login".equals(action)) {
+            if(requestURI.endsWith("LoginAction.do") && "login".equals(action)||"register".equals(action)) {
             	
             	chain.doFilter(request,response);
             	
             } else {
-                // 不是登入驗證的請求或是SessionTimeOut,轉向到 "/login.html" 要求重新登入.            	
+                // 不是登入驗證的請求或是SessionTimeOut,轉向到 "/Login.jsp" 要求重新登入.            	
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/VendingMachineLogin.jsp");
                 dispatcher.forward(request,response);
             }            

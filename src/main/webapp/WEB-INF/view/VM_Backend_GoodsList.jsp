@@ -100,13 +100,13 @@
 						<c:param name="pageNo" value="" />
 						</c:url>
 		<c:if test="${pages.curPage>1}">
-					<td class="page-item"><a class="page-link" href="${page}${pages.curPage-1}">上一頁</a></td>
+					<td class="page-item"><a class="page-link" href="${page}${pages.curPage-1}">Previous</a></td>
 					</c:if>
 					<c:forEach  items="${pages.pageNo}" var="pageNo">
 					<td class="page-item"><a class="page-link" href="${page}${pageNo}">${pageNo}</a></td>
 					</c:forEach>
 					<c:if test="${pages.curPage<pages.totalPages}">
-				<td class="page-item"><a class="page-link" href="${page}${pages.curPage+1}">下一頁</a></td>
+				<td class="page-item"><a class="page-link" href="${page}${pages.curPage+1}">Next</a></td>
 			</c:if>
 	</tr>	
 	</table>

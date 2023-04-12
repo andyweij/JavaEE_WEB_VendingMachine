@@ -76,7 +76,7 @@ public class LoginAction extends DispatchAction {
     	
     	return mapping.findForward("fail");
     }
-    public ActionForward regis(ActionMapping mapping, ActionForm form, 
+    public ActionForward register(ActionMapping mapping, ActionForm form, 
             HttpServletRequest req, HttpServletResponse resp) throws Exception {
     	ActionForward actFwd = null;
     	String inputID = req.getParameter("newid");

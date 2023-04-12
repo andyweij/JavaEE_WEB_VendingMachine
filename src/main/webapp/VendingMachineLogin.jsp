@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <c:url value="/" var="WEB_PATH"/>
 <c:url value="/js" var="JS_PATH"/>
@@ -20,26 +20,34 @@
 </head>
 <body>
 <div class="container">
+<div class="col-md-4 offset-md-4 mb-3">
 <c:if test="${not empty requestScope.loginMsg}">
 		系統回應：<p style="color:blue;">${requestScope.loginMsg}</p>
 	</c:if>
+	</div>
 <form action="LoginAction.do" method="post">
 <input type="hidden" name="action" value="login"/>
-  <div class="form-group">
+  <div class="form-row">
+  <div class="col-md-4 offset-md-4 mb-3">
     <label for="exampleInputEmail1">User Name</label>
-    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter userName" name="id">
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="ID" name="id">
     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
   </div>
-  <div class="form-group">
+  </div>
+  <div class="form-row">
+  <div class="col-md-4 offset-md-4 mb-3">
     <label for="exampleInputPassword1">Password</label>
     <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="pwd">
   </div>
-  <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Check me out</label>
   </div>
+     <div class="row">
+   <div class="col-md-3 offset-md-4 mb-3">
   <button type="submit" class="btn btn-primary">Submit</button>
-   <a href="${WEB_PATH}/VendingMachineregister.jsp" class="card-link">註冊</a>
+  </div>
+  <div class="col-md-3 mb-3">
+  <h3><a href="${WEB_PATH}/VendingMachineregister.jsp" class="badge badge-success">註冊</a></h3>
+   </div>
+   </div>
 </form>
 
 <!--	<c:if test="${not empty requestScope.loginMsg}">
