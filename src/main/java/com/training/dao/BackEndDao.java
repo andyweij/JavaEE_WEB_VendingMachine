@@ -188,14 +188,16 @@ public class BackEndDao {
 		
 		List<Goods> goods = new ArrayList<>();
 		PageSearchKey searchkey=pagesearchkey;
-		String querySQL =" SELECT ROWNUM ROW_NUM , BG.* FROM beverage_goods BG WHERE  goods_id like ? and  lower(goods_name) like lower(?) "; 
+		StringBuilder sbquerySQL=new StringBuilder();
+		sbquerySQL.append(" SELECT ROWNUM ROW_NUM , BG.* FROM beverage_goods BG WHERE  goods_id like ? and  lower(goods_name) like lower(?) ");
+//		String querySQL =" SELECT ROWNUM ROW_NUM , BG.* FROM beverage_goods BG WHERE  goods_id like ? and  lower(goods_name) like lower(?) "; 
 		String goodsId;
 		String goodsName;
-		String pricemin;
-		String pricemax;
-		String status;
-		String order;
-		String quantity;
+//		String pricemin;
+//		String pricemax;
+//		String status;
+//		String order;
+//		String quantity;
 		
 		if(null==searchkey.getGoodsID()||"".equals(searchkey.getGoodsID())){
 			goodsId="%%";
@@ -214,42 +216,49 @@ public class BackEndDao {
 			
 		}
 		else if(!searchkey.getGoodstatus().isEmpty()){
-			status=" and status = "+searchkey.getGoodstatus();
-			querySQL+=status;
+			sbquerySQL.append(" and status = "+searchkey.getGoodstatus());
+//			status=" and status = "+searchkey.getGoodstatus();
+//			querySQL+=status;
 		}
 			
 		if(null==searchkey.getStockQuantity()){
 			
 		}else if(!searchkey.getStockQuantity().isEmpty()){
-			quantity=" and QUANTITY < "+searchkey.getStockQuantity();
-			querySQL+=quantity;
+			sbquerySQL.append(" and QUANTITY < "+searchkey.getStockQuantity());
+//			quantity=" and QUANTITY < "+searchkey.getStockQuantity();
+//			querySQL+=quantity;
 		}
 		
 		if(null==searchkey.getPriceMax()&&null==searchkey.getPriceMin()){
 		}else if(!searchkey.getPriceMin().isEmpty()&&!searchkey.getPriceMax().isEmpty()){
-			String pricerange=" and price between "+searchkey.getPriceMin()+" and "+searchkey.getPriceMax() ;
-			querySQL+=pricerange;
+			sbquerySQL.append(" and price between "+searchkey.getPriceMin()+" and "+searchkey.getPriceMax());
+//			String pricerange=" and price between "+searchkey.getPriceMin()+" and "+searchkey.getPriceMax() ;
+//			querySQL+=pricerange;
 		}else{
 			if(null==searchkey.getPriceMin()||!searchkey.getPriceMin().isEmpty()){
-				pricemin=" and price < "+searchkey.getPriceMin();
-				querySQL+=pricemin;			
+				sbquerySQL.append(" and price < "+searchkey.getPriceMin());
+//				pricemin=" and price < "+searchkey.getPriceMin();
+//				querySQL+=pricemin;			
 			}else if(null==searchkey.getPriceMax()||!searchkey.getPriceMax().isEmpty()){
-				pricemax=" and price > "+searchkey.getPriceMax();
-				querySQL+=pricemax;
+				sbquerySQL.append(" and price > "+searchkey.getPriceMax());
+//				pricemax=" and price > "+searchkey.getPriceMax();
+//				querySQL+=pricemax;
 			}
 		}
 		if(null==searchkey.getPriceOrder()){
 		}else if(searchkey.getPriceOrder().equals("0")){
-			order=" order by price desc ";
-			querySQL+=order;
+			sbquerySQL.append(" order by price desc ");
+//			order=" order by price desc ";
+//			querySQL+=order;
 		}else if(searchkey.getPriceOrder().equals("1")){
-			order=" order by price ";
-			querySQL+=order;
+			sbquerySQL.append(" order by price ");
+//			order=" order by price ";
+//			querySQL+=order;
 		}
 		// Step1:取得Connection
 		try (Connection conn = DBConnectionFactory.getOracleDBConnection();
 				// Step2:Create prepareStatement For SQL
-				PreparedStatement stmt = conn.prepareStatement(querySQL);){
+				PreparedStatement stmt = conn.prepareStatement(sbquerySQL.toString());){
 			int count=1;
 			stmt.setString(count++,goodsId);
 			stmt.setString(count++,goodsName);
