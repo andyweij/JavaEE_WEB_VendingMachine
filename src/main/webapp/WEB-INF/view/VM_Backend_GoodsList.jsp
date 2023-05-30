@@ -33,7 +33,7 @@
 	<td>商品名稱(不區分大小寫)</td>
 	</tr>
 	<tr>
-	<td class="classTD"><input type="text" name="goodsID" id="goodsNo" value="${pagesearchkey.goodsID}" ></td>
+	<td class="classTD"><input type="text" name="goodsID" id="goodsID" value="${pagesearchkey.goodsID}" ></td>
 	<td class="classTD"><input type="text" name="goodsName" id="goodsName" value="${pagesearchkey.goodsName}" ></td>
 </tr>
 <tr>
@@ -45,7 +45,7 @@
 	<td class="classTD"><input type="text" name="priceMin" id="priceMin" value="${pagesearchkey.priceMin}" ></td>
 	<td class="classTD"><input type="text" name="priceMax" id="priceMax" value="${pagesearchkey.priceMax}" ></td>
 	<td >
-	<select id="priceOrder" name="priceOrder">
+	<select id="priceOrder" name="priceOrder" >
 	<option value="2">無</option>
 	<option value="0">價格由高到低</option>
 	<option value="1">價格由低到高</option>
@@ -59,9 +59,12 @@
 <tr>
 	<td class="classTD"><input type="text" name="stockQuantity" id="stockQuantity" value="${pagesearchkey.stockQuantity}" ></td>
 	<td >
-	<select id="goodstatus" name="goodstatus">
-	<option value="${pagesearchkey.goodstatus }">All</option>
+	<select id="goodstatus" name="goodstatus" >
+	<option value="${pagesearchkey.goodstatus}">請選擇</option>
 	<option value="1">上架</option>
+	<c:if test="${pagesearchkey.goodstatus}==1">
+	<option value="1">上架</option>
+	</c:if>
 	<option value="0">下架</option>
 	</select>
 	</td>

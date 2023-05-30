@@ -42,7 +42,7 @@
   </div>
      <div class="row">
    <div class="col-md-3 offset-md-4 mb-3">
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-primary">登入</button>
   </div>
   <div class="col-md-3 mb-3">
   <h3><a href="${WEB_PATH}/VendingMachineregister.jsp" class="badge badge-success">註冊</a></h3>

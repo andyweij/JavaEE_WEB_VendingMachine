@@ -74,7 +74,7 @@ public class FrontendService {
 		Pagination pages = new Pagination();
 		pages.setPageSize(6);//每頁顯示筆數
 		pages.setSearchKeyword(searchkeyword);	
-		if(null==pageNo||pageNo==""){
+		if(null==pageNo||pageNo.equals("")){
 			pages.setCurPage(1);
 		}else{
 		pages.setCurPage(Integer.parseInt(pageNo));

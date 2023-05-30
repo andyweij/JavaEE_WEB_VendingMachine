@@ -64,7 +64,7 @@
 									</div>
 									<div class="card-body"  >
 					   	<input class="btn btn-secondary" type="submit" value="送出">&emsp;
-		    			<a href="BackendAction.do?action=queryGoods" class="card-link">後臺頁面</a>
+		    			
 		    			<a href="LoginAction.do?action=logout" class="card-link">登出</a>
 		 				 </div>			
 									</div>

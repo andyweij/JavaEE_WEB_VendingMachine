@@ -33,7 +33,7 @@
 					  dataType : 'JSON', // Server回傳的資料類型
 					  success: function(goodsInfo) { // 請求成功時執行函式
 					  	
-					  	$("#goodPrice").val(goodsInfo.goodsPrice);
+					  	$("#goodPrice").val(goodsInfo.goodsPrice);//id
 					  	$("#goodQuantity").val(goodsInfo.goodsQuantity);
 					  	$("#goodstatus").val(goodsInfo.status);
 					  },
@@ -81,7 +81,7 @@
 			<input type="number" id="goodQuantity" name="goodsQuantity" size="5" value="${updategoods.goodsQuantity}" >
 			</p>
 			<p>
-				商品狀態： <select name="status" id="goodstatus">
+				商品狀態： <select id="goodstatus" name="status">
 
 					<option value="1">上架</option>
 					<option value="0">下架</option>

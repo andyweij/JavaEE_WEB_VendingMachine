@@ -11,9 +11,8 @@ public class BuyGoodsRtn {
 	private int returnprice;
 	private String customerId;
 	private Set<ShoppingCartGoods> shoppingCartGoods;
-	
 	private Map<Goods, Integer> carGoods;
-	
+
 	public Map<Goods, Integer> getCarGoods() {
 		return carGoods;
 	}

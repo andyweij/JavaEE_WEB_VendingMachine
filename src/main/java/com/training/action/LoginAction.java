@@ -71,7 +71,8 @@ public class LoginAction extends DispatchAction {
             HttpServletRequest request, HttpServletResponse response) throws Exception {
     	// 登出請求
     	HttpSession session = request.getSession();
-		session.removeAttribute("account");
+//		session.removeAttribute("account");//移除登入資訊
+		session.invalidate();//清空session
 		request.setAttribute("loginMsg", "謝謝您的光臨!");
     	
     	return mapping.findForward("fail");

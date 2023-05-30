@@ -27,7 +27,7 @@ import com.training.vo.ShoppingCartGoodsInfo;
 @MultipartConfig
 public class MemberAction extends DispatchAction {
 
-	private MemberService memberservice = MemberService.getInstance();
+	private MemberService memberservice = MemberService.getInstance();//唯一實例效能較好
 
 	public ActionForward addCartGoods(ActionMapping mapping, ActionForm form, HttpServletRequest req,
 			HttpServletResponse response) throws IOException {	
@@ -44,7 +44,6 @@ public class MemberAction extends DispatchAction {
 		HttpSession session = req.getSession();
 		if (null==session.getAttribute("shoppingCartGoods")) {	
 			shoppingCartGoods.add(cartGoods);
-
 		} else {
 			shoppingCartGoods = (ArrayList<ShoppingCartGoods>)session.getAttribute("shoppingCartGoods");
 			if(shoppingCartGoods.contains(cartGoods)) {
@@ -75,6 +74,10 @@ public class MemberAction extends DispatchAction {
 //		session.removeAttribute("cartGoodsInfo");
 		List<ShoppingCartGoods> shoppingCartGoods=(ArrayList<ShoppingCartGoods>)session.getAttribute("shoppingCartGoods");
 		if(null==shoppingCartGoods) {
+			PrintWriter out = response.getWriter();
+			out.println("購物車無選購商品");
+			out.flush();
+			out.close();
 			System.out.println("購物車無選購商品");
 		}else {
 			System.out.println("-----購物車商品-----");

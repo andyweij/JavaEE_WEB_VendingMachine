@@ -19,12 +19,11 @@ public class MemberDao {
 		Goods good = new Goods();
 		try (Connection conn = DBConnectionFactory.getOracleDBConnection();
 				PreparedStatement pstmt = conn.prepareStatement(querysql)) {
-				conn.setAutoCommit(false);			
+//				conn.setAutoCommit(false);			
 				int count = 1;
 				pstmt.setLong(count, goodsId);
 				try (ResultSet rs = pstmt.executeQuery()) {
-					while (rs.next()) {
-						
+					while (rs.next()) {					
 						good.setGoodsID(rs.getString("GOODS_ID"));
 						good.setGoodsImageName(rs.getString("IMAGE_NAME"));
 						good.setGoodsName(rs.getString("GOODS_NAME"));
@@ -33,8 +32,7 @@ public class MemberDao {
 						good.setStatus(rs.getString("STATUS"));
 					}
 				}catch (SQLException e) {
-						conn.rollback();
-						throw e;
+						e.printStackTrace();
 					}
 
 				} catch (SQLException e) {
@@ -48,7 +46,7 @@ public class MemberDao {
 		String querysql = "SELECT * FROM BEVERAGE_MEMBER WHERE identification_no = ?";
 		try (Connection conn = DBConnectionFactory.getOracleDBConnection();
 				PreparedStatement pstmt = conn.prepareStatement(querysql)) {
-			conn.setAutoCommit(false);
+//			conn.setAutoCommit(false);
 			pstmt.setString(1, identificationNo);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				while (rs.next()) {
@@ -58,8 +56,7 @@ public class MemberDao {
 					member.setPassword(rs.getString("PASSWORD"));
 				}
 			} catch (SQLException e) {
-				conn.rollback();
-				throw e;
+				e.printStackTrace();				
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -82,6 +79,7 @@ public class MemberDao {
 			conn.commit();
 			}catch(SQLException e) {
 				conn.rollback();
+				throw e;
 			}
 		} catch (SQLException e) {
 			createSuccess=false;

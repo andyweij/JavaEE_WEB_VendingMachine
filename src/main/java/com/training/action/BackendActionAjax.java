@@ -10,6 +10,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,11 +43,9 @@ private BackendService backendservice = BackendService.getInstance();
 		PageSearchKey pagesearchkey=new PageSearchKey();
 		BeanUtils.copyProperties(pagesearchkey, backactionform);
 		Pagination pages=backendservice.pagInation(pagesearchkey);
-
 		req.setAttribute("pagesearchkey", pagesearchkey);
 		req.setAttribute("pages", pages);
 		req.setAttribute("goods", pages.getGoodsList());
-//		goods.stream().forEach(a -> System.out.println(a.toString()));
 		// Redirect to view
 		return mapping.findForward("backendGoodsList");
 	}
@@ -107,7 +106,7 @@ private BackendService backendservice = BackendService.getInstance();
 			BeanUtils.copyProperties(good, backactionform);
 			FormFile file = backactionform.getGoodsImage();
 			good.setGoodsImageName(file.getFileName());
-			ServletContext application=this.getServlet().getServletContext();;
+			ServletContext application=this.getServlet().getServletContext();
 			String goodsImgPath=this.servlet.getInitParameter("GoodsImgPath");
 			String serverGoodsImgPath =application.getRealPath(goodsImgPath);
 			Path serverImgPath = Paths.get(serverGoodsImgPath).resolve(file.getFileName());
@@ -136,17 +135,17 @@ private BackendService backendservice = BackendService.getInstance();
 		// Redirect to view
 		return mapping.findForward("backendGoodsSaleReport");
 	}
-	public ActionForward goodsSearch (ActionMapping mapping, ActionForm form, 
-		    HttpServletRequest req, HttpServletResponse resp) throws Exception {
-				HttpSession session = req.getSession();	
-				session.removeAttribute("goods");
-				BackActionForm backactionform=(BackActionForm)form;
-				PageSearchKey pagesearchkey=new PageSearchKey();
-				BeanUtils.copyProperties(pagesearchkey, backactionform);
-				List<Goods> goodsList=backendservice.queryGoodsBykey(pagesearchkey);
-				req.setAttribute("pagesearchkey", pagesearchkey);
-				session.setAttribute("goods", goodsList);
-				
-				return mapping.findForward("backendGoodsList");
-			}
+//	public ActionForward goodsSearch (ActionMapping mapping, ActionForm form, 
+//		    HttpServletRequest req, HttpServletResponse resp) throws Exception {
+//				HttpSession session = req.getSession();	
+//				session.removeAttribute("goods");
+//				BackActionForm backactionform=(BackActionForm)form;
+//				PageSearchKey pagesearchkey=new PageSearchKey();
+//				BeanUtils.copyProperties(pagesearchkey, backactionform);
+//				List<Goods> goodsList=backendservice.queryGoodsBykey(pagesearchkey);
+//				req.setAttribute("pagesearchkey", pagesearchkey);
+//				session.setAttribute("goods", goodsList);
+//				
+//				return mapping.findForward("backendGoodsList");
+//			}
 }

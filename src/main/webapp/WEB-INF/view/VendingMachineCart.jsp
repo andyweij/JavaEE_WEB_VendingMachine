@@ -19,12 +19,12 @@
 <title>FrontEnd</title>
 <script type="text/javascript">
 
-$(document).ready(function(){
+/* $(document).ready(function(){
 	
 	$('#btnID').click(function() {
 		$('#showmsg').toggle("slow");
 	})
-});
+}); */
 	 function addCartGoods(goodsID, buyQuantityIdx){					
 			var buyQuantity = document.getElementsByName("buyQuantity")[buyQuantityIdx].value;
 			if(buyQuantity!=0){
@@ -84,7 +84,7 @@ $(document).ready(function(){
 	<br/>	
 	<button onclick="queryCartGoods()">購物車商品列表</button>
 	<button onclick="clearCartGoods()">清空購物車</button>
-	<a href="MemberAction.do?action=CartGoods" class="card-link">購物車</a>
+	<a href="MemberAction.do?action=CartGoods" class="card-link">結帳</a>
 	
 	<br/><br/>
 				<form action="FrontendAction.do" method="get">
