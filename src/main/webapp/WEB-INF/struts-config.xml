@@ -6,6 +6,7 @@
 	<form-beans>
 		<form-bean name="goodsorderform" type="com.training.formbean.GoodsOrderForm" />
 		<form-bean name="backactionform" type="com.training.formbean.BackActionForm" />
+		<!-- <form-bean name="goodslistform" type="com.training.formbean.BackActionForm" /> -->
 	</form-beans>
 
 	<action-mappings>
@@ -23,19 +24,15 @@
 		<action path="/BackendAction"
 			type="com.training.action.BackendActionAjax" parameter="action"
 			name="backactionform">
-			<!--<action path="/BackendAction" type="com.training.action.BackendAction" 
-				parameter="action" name="backactionform"> -->
 
 			<forward name="backendGoodsList"
 				path="/WEB-INF/view/VM_Backend_GoodsList.jsp" />
-
-
+				
 			<forward name="backendGoodsReplenishment"
 				path="BackendAction.do?action=updateGoodsview" redirect="true" />
-			<!--<forward name="backendGoodsReplenishmentview" path="/WEB-INF/view/VM_Backend_GoodsReplenishment.jsp"/> -->
 			<forward name="backendGoodsReplenishmentview"
 				path="/WEB-INF/view/VM_Backend_GoodsReplenishmentAjax.jsp" />
-
+				
 			<forward name="backendGoodsCreate"
 				path="BackendAction.do?action=addGoodsview" redirect="true" />
 			<forward name="backendGoodsCreateview"
@@ -43,6 +40,7 @@
 
 			<forward name="backendGoodsSaleReport"
 				path="/WEB-INF/view/VM_Backend_GoodsSaleReport.jsp" />
+				
 		</action>
 
 		<action path="/LoginAction"

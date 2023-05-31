@@ -33,8 +33,8 @@
 	<td>商品名稱(不區分大小寫)</td>
 	</tr>
 	<tr>
-	<td class="classTD"><input type="text" name="goodsID" id="goodsID" value="${pagesearchkey.goodsID}" ></td>
-	<td class="classTD"><input type="text" name="goodsName" id="goodsName" value="${pagesearchkey.goodsName}" ></td>
+	<td class="classTD"><input type="text" name="goodsId" id="goodsId" value="${pagesearchkey.goodsId}"></td>
+	<td class="classTD"><input type="text" name="goodsSName" id="goodsSName" value="${pagesearchkey.goodsSName}" ></td>
 </tr>
 <tr>
 	<td >商品最低價格</td>
@@ -46,9 +46,9 @@
 	<td class="classTD"><input type="text" name="priceMax" id="priceMax" value="${pagesearchkey.priceMax}" ></td>
 	<td >
 	<select id="priceOrder" name="priceOrder" >
-	<option value="2">無</option>
-	<option value="0">價格由高到低</option>
-	<option value="1">價格由低到高</option>
+	<option value="2">預設</option>
+	<option <c:if test="${pagesearchkey.priceOrder eq 0}">selected</c:if> value="0">價格由高到低</option>
+	<option <c:if test="${pagesearchkey.priceOrder eq 1}">selected</c:if> value="1">價格由低到高</option>
 	</select>
 	</td>
 </tr>
@@ -60,12 +60,10 @@
 	<td class="classTD"><input type="text" name="stockQuantity" id="stockQuantity" value="${pagesearchkey.stockQuantity}" ></td>
 	<td >
 	<select id="goodstatus" name="goodstatus" >
-	<option value="${pagesearchkey.goodstatus}">請選擇</option>
-	<option value="1">上架</option>
-	<c:if test="${pagesearchkey.goodstatus}==1">
-	<option value="1">上架</option>
-	</c:if>
-	<option value="0">下架</option>
+	<option value="2">All</option>
+	<option <c:if test="${pagesearchkey.goodstatus eq 1}">selected</c:if> value="1">上架</option>
+
+	<option <c:if test="${pagesearchkey.goodstatus eq 0}">selected</c:if> value="0">下架</option>
 	</select>
 	</td>
 	<td><input type="submit" value="查詢"></td>	
@@ -76,8 +74,8 @@
 					<td width="100"><b>商品編號</b></td>
 					<td width="100"><b>商品名稱</b></td>
 					<td width="100"><b>商品價格</b></td>
-					<td width="100"><b>商品庫存</b></td>
-					<td width="100"><b>商品狀態</b></td>
+					<td width="100"><b>庫存</b></td>
+					<td width="100"><b>狀態</b></td>
 				</tr>			
 				<c:forEach items="${goods}" var="goods">
 					<tr height="30" align="center">
@@ -85,7 +83,8 @@
 						<td>${goods.goodsName}</td>
 						<td>${goods.goodsPrice}</td>
 						<td>${goods.goodsQuantity}</td>
-						<td>${goods.status}</td>
+						<c:if test="${goods.status==1}"><td>上架</td></c:if>
+						<c:if test="${goods.status==0}"><td>下架</td></c:if>
 					</tr>					
 				</c:forEach>
 	</table>
@@ -94,8 +93,8 @@
 		<td colspan="2" align="right" style="width: 500px">		
 					<c:url value="/BackendAction.do" var="page">
 						<c:param name="action" value="queryGoods" />
-						<c:param name="goodsNo" value="${pagesearchkey.goodsID}" />
-						<c:param name="goodsName" value="${pagesearchkey.goodsName}" />
+						<c:param name="goodsNo" value="${pagesearchkey.goodsId}" />
+						<c:param name="goodsSName" value="${pagesearchkey.goodsSName}" />
 						<c:param name="priceMin" value="${pagesearchkey.priceMin}" />
 						<c:param name="priceMax" value="${pagesearchkey.priceMax}" />
 						<c:param name="priceOrder" value="${pagesearchkey.priceOrder}" />
@@ -103,6 +102,7 @@
 						<c:param name="pageNo" value="" />
 						</c:url>
 		<c:if test="${pages.curPage>1}">
+				<td class="page-item"><a class="page-link" href="${page}1"><<</a></td>
 					<td class="page-item"><a class="page-link" href="${page}${pages.curPage-1}">Previous</a></td>
 					</c:if>
 					<c:forEach  items="${pages.pageNo}" var="pageNo">
@@ -110,6 +110,7 @@
 					</c:forEach>
 					<c:if test="${pages.curPage<pages.totalPages}">
 				<td class="page-item"><a class="page-link" href="${page}${pages.curPage+1}">Next</a></td>
+				<td class="page-item"><a class="page-link" href="${page}${pages.totalPages}">>></a></td>
 			</c:if>
 	</tr>	
 	</table>

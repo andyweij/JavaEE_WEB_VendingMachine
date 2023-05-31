@@ -42,6 +42,7 @@ public class MemberAction extends DispatchAction {
 		System.out.println("buyQuantity:" + cartGoods.getBuyQuantity());
 		List<ShoppingCartGoods> shoppingCartGoods= new ArrayList<>() ;
 		HttpSession session = req.getSession();
+		
 		if (null==session.getAttribute("shoppingCartGoods")) {	
 			shoppingCartGoods.add(cartGoods);
 		} else {
@@ -69,29 +70,22 @@ public class MemberAction extends DispatchAction {
 	public ActionForward queryCartGoods(ActionMapping mapping, ActionForm form, HttpServletRequest req,
 			HttpServletResponse response) throws IOException {
 		ShoppingCartGoodsInfo cartGoodsInfo = new ShoppingCartGoodsInfo();
-		response.setCharacterEncoding("UTF-8");
 		HttpSession session = req.getSession();
-//		session.removeAttribute("cartGoodsInfo");
-		List<ShoppingCartGoods> shoppingCartGoods=(ArrayList<ShoppingCartGoods>)session.getAttribute("shoppingCartGoods");
+		List<ShoppingCartGoods> shoppingCartGoods=(ArrayList<ShoppingCartGoods>)session.getAttribute("shoppingCartGoods");//取得購物車內容
 		if(null==shoppingCartGoods) {
 			PrintWriter out = response.getWriter();
-			out.println("購物車無選購商品");
-			out.flush();
-			out.close();
 			System.out.println("購物車無選購商品");
 		}else {
 			System.out.println("-----購物車商品-----");
 			shoppingCartGoods.stream().forEach(i->System.out.println( "商品編號:"+i.getGoodsID()+"\n商品名稱:"+i.getGoodsName()+"\n商品價格:"+i.getGoodsPrice()+"\n購買數量:"+i.getBuyQuantity()));
 			shoppingCartGoods.stream().forEach(g->g.setGoodsPrice(memberservice.queryByGoodsId(g.getGoodsID()).getGoodsPrice()));
-//			cartGoodsInfo.setShoppingCartGoods(shoppingCartGoods.stream().collect(Collectors.toSet()));
-//			cartGoodsInfo.setTotalAmount(shoppingCartGoods.stream().mapToInt(s->s.getGoodsPrice()*s.getBuyQuantity()).sum());
 			cartGoodsInfo=(ShoppingCartGoodsInfo)session.getAttribute("cartGoodsInfo");
 			response.setContentType("application/json");
 			PrintWriter out = response.getWriter();	
 			out.println(JSONObject.fromObject(cartGoodsInfo));
 			out.flush();
 			out.close();
-//			session.setAttribute("cartGoodsInfo",cartGoodsInfo);	
+				
 		}
 		
 		return null;

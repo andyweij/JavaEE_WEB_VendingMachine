@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,7 +37,7 @@ public class FrontendService {
 
 	public boolean updateGoods(BuyGoodsRtn buyRtn,Map<String,Goods> buyGoods) {
 		Set<ShoppingCartGoods> cartGoods=buyRtn.getshoppingCartGoods();
-		Map<ShoppingCartGoods,Integer> updateGoods=new HashMap<>();
+		Map<ShoppingCartGoods,Integer> updateGoods=new HashMap<>();//商品：更新數量
 		cartGoods.stream().forEach(g->updateGoods.put(g,(buyGoods.get(String.valueOf(g.getGoodsID())).getGoodsQuantity()-g.getBuyQuantity())));
 		boolean updateSuccess = frontenddao.batchUpdateGoodsQuantity(updateGoods);
 		if (updateSuccess) {
@@ -49,11 +50,20 @@ public class FrontendService {
 		int total = 0;
 		Set<ShoppingCartGoods> cartGoods=buyRtn.getshoppingCartGoods();
 		cartGoods.stream().forEach(g->{
-			if(g.getBuyQuantity()>queryBuyGoods.get(String.valueOf(g.getGoodsID())).getGoodsQuantity()){	//確認庫存數量是否>購買數量
+			if(g.getBuyQuantity()>queryBuyGoods.get(String.valueOf(g.getGoodsID())).getGoodsQuantity()&&queryBuyGoods.get(String.valueOf(g.getGoodsID())).getGoodsQuantity()>0){	//購買數量>庫存數量=>就將購物車數量更新為庫存數量
 				g.setBuyQuantity(queryBuyGoods.get(String.valueOf(g.getGoodsID())).getGoodsQuantity());
+			}else if(queryBuyGoods.get(String.valueOf(g.getGoodsID())).getGoodsQuantity()==0) {
+				g.setBuyQuantity(0);
 			}
 		});
-		total = cartGoods.stream().mapToInt(g->g.getGoodsPrice()*g.getBuyQuantity()).sum();
+		total = cartGoods.stream().mapToInt(g->g.getGoodsPrice()*g.getBuyQuantity()).sum();	//計算總金額
+		Iterator<ShoppingCartGoods> it=cartGoods.iterator();
+		//移除購買數量為0的商品
+		while(it.hasNext()) {
+			if(it.next().getBuyQuantity()==0) {
+				it.remove();
+			}
+		}
 		buyRtn.setTotalsprice(total);
 		buyRtn.setReturnprice(buyRtn.getPayprice()-buyRtn.getTotalsprice());
 		buyRtn.setshoppingCartGoods(cartGoods);//更新正確數量
@@ -82,29 +92,29 @@ public class FrontendService {
 		if(null==pages.getSearchKeyword()||""==pages.getSearchKeyword()){
 			pages.setTotalPages(new BigDecimal(frontenddao.queryAllGoods().size()).divide(new BigDecimal(pages.getPageSize()), 0, RoundingMode.UP).intValue());//總頁數
 		}else if(null!=pages.getSearchKeyword()||""!=pages.getSearchKeyword()){
-			pages.setTotalPages(new BigDecimal(frontenddao.pageSerach(pages.getSearchKeyword(),"").size()).divide(new BigDecimal(pages.getPageSize()), 0, RoundingMode.UP).intValue());//總頁數
+			pages.setTotalPages(new BigDecimal(frontenddao.pageSerach(pages.getSearchKeyword(),"").size()).divide(new BigDecimal(pages.getPageSize()), 0, RoundingMode.UP).intValue());//總帶搜尋字頁數
 		}	
-		List<Integer> pageno=new ArrayList<>();
+		List<Integer> pageNoList=new ArrayList<>();
 		if(pages.getTotalPages()<3){
 			for(int i=1;i<=pages.getTotalPages();i++){
-				pageno.add(i);
+				pageNoList.add(i);
 			}
 		}else{
 			if(pages.getCurPage()==1){
 				for(int i=1;i<=3;i++){
-					pageno.add(i);	
+					pageNoList.add(i);	
 				}
 			}else if(pages.getCurPage()==pages.getTotalPages()){
 				for(int i=pages.getTotalPages()-2;i<=pages.getTotalPages();i++){
-					pageno.add(i);	
+					pageNoList.add(i);	
 				}
 			}else{
 				for(int i=pages.getCurPage()-1;i<=pages.getCurPage()+1;i++){
-					pageno.add(i);	
+					pageNoList.add(i);	
 				}
 			}
 		}
-		pages.setPageNo(pageno);
+		pages.setPageNo(pageNoList);
 		
 		return pages;
 	}

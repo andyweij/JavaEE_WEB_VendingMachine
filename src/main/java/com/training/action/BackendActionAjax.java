@@ -10,7 +10,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Set;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,26 +42,25 @@ private BackendService backendservice = BackendService.getInstance();
 		PageSearchKey pagesearchkey=new PageSearchKey();
 		BeanUtils.copyProperties(pagesearchkey, backactionform);
 		Pagination pages=backendservice.pagInation(pagesearchkey);
-		req.setAttribute("pagesearchkey", pagesearchkey);
-		req.setAttribute("pages", pages);
-		req.setAttribute("goods", pages.getGoodsList());
-		// Redirect to view
+		req.setAttribute("pagesearchkey", pagesearchkey);//搜尋資訊
+		req.setAttribute("pages", pages);//分頁
+		req.setAttribute("goods", pages.getGoodsList());//分頁商品列表
+		
 		return mapping.findForward("backendGoodsList");
 	}
 	//for Ajax
 	public ActionForward getupdateGoods(ActionMapping mapping, ActionForm form, 
             HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		
-		String goodsId=req.getParameter("id");
+		String goodsId=req.getParameter("goodsID");//被選中的id
 		Goods good = backendservice.queryGoodsById(goodsId);
-		resp.setCharacterEncoding("UTF-8");
 		resp.setContentType("application/json");
 		PrintWriter out = resp.getWriter();
 		out.println(JSONObject.fromObject(good));
 		out.flush();
 		out.close();
 		
-		return null;
+		return null;//非同步不需倒回頁面
 	}
 
 	public ActionForward updateGoodsview(ActionMapping mapping, ActionForm form, 
@@ -73,7 +71,7 @@ private BackendService backendservice = BackendService.getInstance();
 		String id = req.getParameter("goodsID");
 		id = (id != null) ? id : (String)req.getSession().getAttribute("updateGoodsID");
 		if(id != null){
-			Goods good = backendservice.queryGoodsById(id);
+			Goods good = backendservice.queryGoodsById(id);//將以更新資料重新查詢
 			req.setAttribute("updategoods", good);
 		}
 		return mapping.findForward("backendGoodsReplenishmentview");
@@ -88,7 +86,7 @@ private BackendService backendservice = BackendService.getInstance();
 		boolean modifyResult = backendservice.modifyGood(good);
 		String message = modifyResult ? "商品資料更新成功" : "商品資料更新失敗2";
 		session.setAttribute("updateMsg", message);
-		session.setAttribute("updateGoodsID", good.getGoodsID());
+		session.setAttribute("updateGoodsID", good.getGoodsID());//給前端判斷已選中的商品的資訊
 		// Redirect to view
 		return mapping.findForward("backendGoodsReplenishment");
 	}
@@ -131,21 +129,8 @@ private BackendService backendservice = BackendService.getInstance();
 		Set<SalesReport> salesreport = backendservice.querySalesReport(queryStartDate,queryEndDate);
 		req.setAttribute("salesreport", salesreport);
 		salesreport.stream().forEach(a -> System.out.println(a.toString()));
-
-		// Redirect to view
+		
 		return mapping.findForward("backendGoodsSaleReport");
 	}
-//	public ActionForward goodsSearch (ActionMapping mapping, ActionForm form, 
-//		    HttpServletRequest req, HttpServletResponse resp) throws Exception {
-//				HttpSession session = req.getSession();	
-//				session.removeAttribute("goods");
-//				BackActionForm backactionform=(BackActionForm)form;
-//				PageSearchKey pagesearchkey=new PageSearchKey();
-//				BeanUtils.copyProperties(pagesearchkey, backactionform);
-//				List<Goods> goodsList=backendservice.queryGoodsBykey(pagesearchkey);
-//				req.setAttribute("pagesearchkey", pagesearchkey);
-//				session.setAttribute("goods", goodsList);
-//				
-//				return mapping.findForward("backendGoodsList");
-//			}
+
 }

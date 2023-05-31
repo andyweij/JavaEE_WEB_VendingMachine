@@ -30,11 +30,11 @@
 	</form>
 	<table border="1">
 		<tbody>
-			<tr height="50">
+			<tr align="center" height="50">
 				<td width="100"><b>訂單編號</b></td>
 				<td width="100"><b>顧客姓名</b></td>
 				<td width="100"><b>購買日期</b></td>
-				<td width="125"><b>飲料名稱</b></td> 
+				<td width="150"><b>飲料名稱</b></td> 
 				<td width="100"><b>購買單價</b></td>
 				<td width="100"><b>購買數量</b></td>
 				<td width="100"><b>購買金額</b></td>

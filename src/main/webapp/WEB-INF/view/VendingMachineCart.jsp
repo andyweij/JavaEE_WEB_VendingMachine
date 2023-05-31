@@ -19,12 +19,6 @@
 <title>FrontEnd</title>
 <script type="text/javascript">
 
-/* $(document).ready(function(){
-	
-	$('#btnID').click(function() {
-		$('#showmsg').toggle("slow");
-	})
-}); */
 	 function addCartGoods(goodsID, buyQuantityIdx){					
 			var buyQuantity = document.getElementsByName("buyQuantity")[buyQuantityIdx].value;
 			if(buyQuantity!=0){
@@ -44,15 +38,16 @@
 		            const responseJson = JSON.parse(response);		            
 		            alert(JSON.stringify(responseJson, null, 3));
 		      };
-		   }
-			}else{
-				alert('請輸入購買數量');
-			}
+		   }			
+		}else{
+			alert('請輸入購買數量');
 		}
+	 }
 		function queryCartGoods(){
 			const formData = new FormData();
 			formData.append('action', 'queryCartGoods');
 			// 送出查詢購物車商品請求
+			if(formData!=null){
 			const request = new XMLHttpRequest();
 			request.open("POST", "MemberAction.do");			
 			request.send(formData);
@@ -63,7 +58,9 @@
 		            alert(JSON.stringify(responseJson, null, 3));
 		      };
 		   }
-
+			}else{
+				alert('請選購商品');
+			}
 		}
 		function clearCartGoods(){
 			const formData = new FormData();
@@ -183,6 +180,7 @@
 						<c:param name="pageNo" value="" />
 					</c:url>
 					<c:if test="${pages.curPage>1}">
+					<li class="page-item"><a class="page-link" href="${page}1"><<</a></li>
 					<li class="page-item"><a class="page-link" href="${page}${pages.curPage-1}">Previous</a></li>
 					</c:if>
 					<c:forEach  items="${pages.pageNo}" var="pageNo">
@@ -192,6 +190,7 @@
 					</c:forEach>
 					<c:if test="${pages.curPage<pages.totalPages}">
 				<li class="page-item"><a class="page-link" href="${page}${pages.curPage+1}">Next</a></li>
+				<li class="page-item"><a class="page-link" href="${page}${pages.totalPages}">>></a></li>
 			</c:if>
 			</ul>
 		</nav>

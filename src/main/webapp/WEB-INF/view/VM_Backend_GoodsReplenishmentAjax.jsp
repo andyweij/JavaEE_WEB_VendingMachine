@@ -19,11 +19,11 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("#goodId").bind("change",function(){
-				
+				//# 取id
 				var goodsID = $("#goodId option:selected").val();
 				
-				var goodsParam = {id: goodsID};
-				
+				var goodsParam = {goodsID : goodsID};
+			
 				if(goodsID != ""){
 					$.ajax({
 					  url: '${WEB_PATH}BackendAction.do?action=getupdateGoods', // 指定要進行呼叫的位址
@@ -49,9 +49,6 @@
 			});
 		});
 	</script>
-
-
-
 </head>
 <body>
 	<%@ include file="BackendMenu.jsp"%>
@@ -66,7 +63,8 @@
 				<select size="1" id="goodId" name="goodsID" >
 					<option value="">----- 請選擇 -----</option>
 					<c:forEach items="${goods}" var="goods">
-						<option value="${goods.goodsID}">
+						<option <c:if test="${goods.goodsID eq updategoods.goodsID}">selected</c:if> 
+						value="${goods.goodsID}">
 							${goods.goodsName}
 							</option>
 					</c:forEach>

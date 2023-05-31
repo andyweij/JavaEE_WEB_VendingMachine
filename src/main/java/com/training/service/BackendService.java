@@ -20,7 +20,6 @@ public class BackendService {
 
 	public static BackendService getInstance() {
 		return backendservice;
-
 	}
 
 	public List<Goods> queryGoods() {
@@ -52,6 +51,7 @@ public class BackendService {
 	}
 	
 	public Pagination pagInation(PageSearchKey page) {
+		
 		Pagination pagination = new Pagination();
 		pagination.setPageSize(6);//每頁顯示筆數
 		pagination.setTotalPages((int)Math.ceil((double)backenddao.queryGoodsBykey(page).size()/pagination.getPageSize()));//總頁數

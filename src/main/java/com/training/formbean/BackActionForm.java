@@ -9,7 +9,10 @@ import org.apache.struts.upload.FormFile;
 public class BackActionForm extends ActionForm{
 	
 	private String goodsID;
+	private String goodsId;
+	
 	private String goodsName;
+	private String goodsSName;
 	private int goodsPrice;
 	private int goodsQuantity;
 	private FormFile goodsImage;
@@ -23,6 +26,21 @@ public class BackActionForm extends ActionForm{
 	private String goodstatus;
 	private String pageNo;
 
+	public String getGoodsSName() {
+		return goodsSName;
+	}
+
+	public void setGoodsSName(String goodsSName) {
+		this.goodsSName = goodsSName;
+	}
+
+	public String getGoodsId() {
+		return goodsId;
+	}
+
+	public void setGoodsId(String goodsId) {
+		this.goodsId = goodsId;
+	}
 	public String getPageNo() {
 		return pageNo;
 	}

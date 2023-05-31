@@ -129,18 +129,28 @@ public class FrontEndDao {
 		return insertSuccess;
 	}
 	public List<Goods> pageSerach(String searchKeyword,String pageNo){
+//		SELECT * FROM 
+//		(
+//		SELECT ROWNUM ROW_NUM , BGS.* FROM 
+//		( SELECT bg.* FROM BEVERAGE_GOODS bg WHERE LOWER(GOODS_NAME) LIKE '%%' AND status=1) BGS
+//		)   
+//		WHERE ROW_NUM >= 1 AND ROW_NUM <= 6 ;
 		List<Goods> goodsList=new ArrayList<>();
 		String sk = "%" + searchKeyword + "%";
-		String querysql="SELECT * FROM ( SELECT ROWNUM ROW_NUM, bg.* FROM BEVERAGE_GOODS bg WHERE LOWER(GOODS_NAME) LIKE ? )  ";
+//		String querysql="SELECT * FROM ( SELECT ROWNUM ROW_NUM, bg.* FROM BEVERAGE_GOODS bg WHERE LOWER(GOODS_NAME) LIKE ? AND status=1 )  ";
+		StringBuilder sb=new StringBuilder();
+		sb.append("SELECT * FROM ( SELECT ROWNUM ROW_NUM , BGS.* FROM ( SELECT bg.* FROM BEVERAGE_GOODS bg WHERE LOWER(GOODS_NAME) LIKE ? AND status=1 ) BGS )");
 		if(pageNo=="") {
 			
 		}else {		
 		int endRowNo=Integer.parseInt(pageNo)*6;
 		int startRowNo=endRowNo-5;
-		querysql += " WHERE ROW_NUM >= "+startRowNo+" AND ROW_NUM <= "+endRowNo+"AND STATUS=1 ";
-		}		
+//		querysql += " WHERE ROW_NUM >= "+startRowNo+" AND ROW_NUM <= "+endRowNo+" AND STATUS=1 ";
+		sb.append(" WHERE ROW_NUM >= "+startRowNo+" AND ROW_NUM <= "+endRowNo);
+		}
+		
 		try (Connection conn = DBConnectionFactory.getOracleDBConnection();
-				PreparedStatement pstmt = conn.prepareStatement(querysql)) {
+				PreparedStatement pstmt = conn.prepareStatement(sb.toString())) {
 			conn.setAutoCommit(false);
 			int count = 1;
 			pstmt.setString(count++, sk);
