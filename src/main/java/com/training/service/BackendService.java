@@ -55,8 +55,10 @@ public class BackendService {
 		Pagination pagination = new Pagination();
 		pagination.setPageSize(6);//每頁顯示筆數
 		pagination.setTotalPages((int)Math.ceil((double)backenddao.queryGoodsBykey(page).size()/pagination.getPageSize()));//總頁數
-		if(null==page.getPageNo()||page.getPageNo()==""){
+		
+		if(null==page.getPageNo()||page.getPageNo()==""||Integer.parseInt(page.getPageNo()) >pagination.getTotalPages()){
 			pagination.setCurPage(1);
+			page.setPageNo("1");
 		}else{
 			pagination.setCurPage(Integer.parseInt(page.getPageNo()));
 		}

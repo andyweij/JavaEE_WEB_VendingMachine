@@ -106,7 +106,6 @@ public class FrontEndDao {
 					pstmt.setInt(count++, g.getBuyQuantity());
 					pstmt.addBatch();
 					int[] insertCounts = pstmt.executeBatch();
-//					for (int c : insertCounts) {System.out.println(c);}
 					ResultSet rsKeys = pstmt.getGeneratedKeys();
 					ResultSetMetaData rsmd = rsKeys.getMetaData();
 					int columnCount = rsmd.getColumnCount();
